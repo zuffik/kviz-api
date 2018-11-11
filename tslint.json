@@ -1,5 +1,11 @@
 {
-  "extends":["tslint:recommended", "kafer-module/tslint"],
+  "extends": [
+    "tslint:recommended",
+    "tslint-react"
+  ],
+  "jsRules": {
+    "indent": [true, "spaces", 2]
+  },
   "rules": {
     "class-name": true,
     "no-shadowed-variable": false,
@@ -48,6 +54,42 @@
     "no-trailing-whitespace": true,
     "no-null-keyword": true,
     "prefer-const": true,
-    "jsdoc-format": true
+    "jsdoc-format": true,
+    "jsx-wrap-multiline": false,
+    "quotemark": false,
+    "interface-name": false,
+    "trailing-comma": false,
+    "no-consecutive-blank-lines": [
+      true,
+      2
+    ],
+    "array-type": false,
+    "no-string-literal": false,
+    "ordered-imports": false,
+    "member-access": false,
+    "jsx-no-multiline-js": false,
+    "member-ordering": false,
+    "arrow-parens": false,
+    "object-literal-sort-keys": false,
+    "jsx-alignment": false,
+    "max-classes-per-file": false,
+    "no-submodule-imports": false,
+    "jsx-boolean-value": false,
+    "jsx-curly-spacing": false,
+    "no-console": [
+      true,
+      "log",
+      "warn"
+    ],
+    "one-variable-per-declaration": false,
+    "no-implicit-dependencies": [
+      true,
+      "dev"
+    ],
+    "no-var-requires": false,
+    "no-sparse-arrays": false,
+    "no-bitwise": false,
+    "jsx-key": true,
+    "unified-signatures": false
   }
 }

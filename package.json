@@ -30,7 +30,6 @@
     "express": "^4.16.4",
     "express-graphql": "^0.7.1",
     "graphql": "^14.0.2",
-    "kafer-module": "git+https://gitlab.com/elias-it-solutions/kafer-module.git",
     "lodash": "^4.17.11",
     "mysql": "^2.16.0",
     "tslint-react": "^3.6.0"

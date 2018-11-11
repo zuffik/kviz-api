@@ -1,5 +1,5 @@
-import { Product } from "kafer-module";
+import { Quiz } from "../index";
 
 export interface Storage {
-  getProducts(): Product[];
+    getQuizzes(): Quiz[];
 }

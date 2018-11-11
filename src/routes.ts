@@ -1,5 +1,4 @@
 import * as graphqlHTTP from "express-graphql";
-import { login } from "./controllers/user";
 import { schema } from "./graphql/schema";
 
 const gql = {schema};
@@ -10,13 +9,12 @@ export const routes: {
   method: 'GET' | 'POST' | 'HEAD' | 'PUT' | 'PATCH' | 'DELETE' | 'ALL'
 }[] = [
   {
-    path: '/login',
-    action: login,
-    method: 'POST'
+    path: '/',
+    action: (req, res) => res.send('working'),
+    method: 'GET'
   },
   {
     path: '/graphql',
-    // TODO: find out problem with TS
     action: (graphqlHTTP as (arg: any) => any)({
       ...gql,
       graphiql: true

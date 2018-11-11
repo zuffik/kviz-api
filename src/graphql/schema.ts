@@ -1,13 +1,13 @@
 import { GraphQLObjectType, GraphQLSchema } from "graphql";
-import { product, user } from "./types";
-import { productQuery } from "./queries";
+import { answer, question, quiz } from "./types";
+import { quizQuery } from "./queries";
 
 export const schema = new GraphQLSchema({
-  types: [user, product],
-  query: new GraphQLObjectType({
-    name: 'Query',
-    fields: () => ({
-      products: productQuery
+    types: [quiz, question, answer],
+    query: new GraphQLObjectType({
+        name: 'Query',
+        fields: () => ({
+            products: quizQuery
+        })
     })
-  })
 });

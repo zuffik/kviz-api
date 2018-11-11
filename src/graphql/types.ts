@@ -1,36 +1,66 @@
-import { GraphQLFloat, GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql";
+import {
+    GraphQLBoolean,
+    GraphQLInt,
+    GraphQLList,
+    GraphQLNonNull,
+    GraphQLObjectType,
+    GraphQLString,
+    GraphQLType
+} from "graphql";
+import { Answer } from "../index";
 
-export const product = new GraphQLObjectType({
-  name: 'Product',
-  description: 'A product',
-  fields: () => ({
-    id: {
-      type: GraphQLNonNull(GraphQLInt),
-      description: 'Product ID'
-    },
-    name: {
-      type: GraphQLNonNull(GraphQLString),
-      description: 'Product name'
-    },
-    price: {
-      type: GraphQLFloat
-    },
-    quantity: {
-      type: GraphQLInt
-    }
-  })
+export const answer = new GraphQLObjectType({
+    name: 'Answer',
+    description: 'An answer to a question',
+    fields: () => ({
+        id: {
+            type: GraphQLNonNull(GraphQLInt),
+            description: 'Answer ID'
+        },
+        text: {
+            type: GraphQLNonNull(GraphQLString),
+            description: 'Text of an answer'
+        },
+        isCorrect: {
+            type: GraphQLNonNull(GraphQLBoolean),
+            description: 'Whether an answer is correct'
+        }
+    })
 });
 
-export const user = new GraphQLObjectType({
-  name: 'User',
-  fields: () => ({
-    id: {
-      type: GraphQLNonNull(GraphQLInt),
-      description: 'User ID'
-    },
-    email: {
-      type: GraphQLNonNull(GraphQLString),
-      description: 'User email'
-    },
-  })
+export const question = new GraphQLObjectType({
+    name: 'Question',
+    description: 'Question for quiz',
+    fields: () => ({
+        id: {
+            type: GraphQLNonNull(GraphQLInt),
+            description: 'Question ID'
+        },
+        text: {
+            type: GraphQLNonNull(GraphQLString),
+            description: 'Text of an question'
+        },
+        answers: {
+            type: GraphQLList(answer),
+            description: 'Possible answers'
+        }
+    })
+});
+
+export const quiz = new GraphQLObjectType({
+    name: 'Quiz',
+    fields: () => ({
+        id: {
+            type: GraphQLNonNull(GraphQLInt),
+            description: 'Quiz ID'
+        },
+        title: {
+            type: GraphQLNonNull(GraphQLString),
+            description: 'Title of a quiz'
+        },
+        questions: {
+            type: GraphQLList(question),
+            description: 'Quiz questions'
+        }
+    })
 });

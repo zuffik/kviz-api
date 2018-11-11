@@ -1,17 +1,17 @@
 export interface Answer {
-    id: number;
+    id?: number;
     text: string;
     isCorrect: boolean;
 }
 
 export interface Question {
-    id: number;
+    id?: number;
     text: string;
     answers: Answer[];
 }
 
 export interface Quiz {
-    id: number;
+    id?: number;
     title: string;
     questions: Question[];
 }

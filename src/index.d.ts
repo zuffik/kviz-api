@@ -15,3 +15,20 @@ export interface Quiz {
     title: string;
     questions: Question[];
 }
+
+export interface User {
+    id?: number;
+    name: string;
+}
+
+export interface UserAnsweredQuestion {
+    question: Question;
+    answers: Answer[];
+}
+
+export interface UserAnsweredQuiz {
+    id?: number;
+    user: User;
+    quiz: Quiz;
+    questions: UserAnsweredQuestion[];
+}

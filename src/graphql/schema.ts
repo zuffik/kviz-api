@@ -1,13 +1,24 @@
 import { GraphQLObjectType, GraphQLSchema } from "graphql";
-import { answer, question, quiz } from "./types";
-import { createAnswer, createQuestion, createQuiz, quizQuery } from "./queries";
+import { answer, question, questionAnswerPair, quiz, user, userAnsweredQuestion, userAnsweredQuiz } from "./types";
+import {
+    answerQuestion,
+    createAnswer,
+    createQuestion,
+    createQuiz,
+    createUser,
+    quizQuery,
+    userAnswersQuery,
+    usersQuery
+} from "./queries";
 
 export const schema = new GraphQLSchema({
-    types: [quiz, question, answer],
+    types: [quiz, question, answer, user, questionAnswerPair, userAnsweredQuestion, userAnsweredQuiz],
     query: new GraphQLObjectType({
         name: 'Query',
         fields: () => ({
-            quizzes: quizQuery
+            quizzes: quizQuery,
+            users: usersQuery,
+            userAnswers: userAnswersQuery
         })
     }),
     mutation: new GraphQLObjectType({
@@ -15,7 +26,9 @@ export const schema = new GraphQLSchema({
         fields: () => ({
             createQuiz,
             createQuestion,
-            createAnswer
+            createAnswer,
+            createUser,
+            answerQuestion
         })
     })
 });

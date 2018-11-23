@@ -1,38 +1,48 @@
-import { Answer, Question, Quiz, User, UserAnsweredQuiz } from "../index";
+import { Answer, Question, Quiz, UniqueId, UniqueIdType as UIDT, User, UserAnsweredQuiz } from "../index";
 import { RAMStorage } from "./RAMStorage";
+import { MongoDBStorage } from "./MongoDBStorage";
 
-const storages: {[key: string]: IStorage} = {
+const storages: { [key: string]: IStorage<UniqueId> } = {
     RAM: new RAMStorage(),
+    MongoDB: new MongoDBStorage()
 };
 
-export interface IStorage {
-    getQuizzes(): Quiz[];
+export interface IStorage<UniqueIdType extends UniqueId = number> {
+    init(): Promise<void>;
 
-    createQuiz(quiz: Quiz, questions: number[]): Quiz;
+    getQuizzes(): Promise<Quiz<UniqueIdType>[]>;
 
-    createQuestion(question: Question, answers: number[]): Question;
+    createQuiz(quiz: Quiz<UniqueIdType>, questions: UniqueIdType[]): Promise<Quiz<UniqueIdType>>;
 
-    createAnswer(answer: Answer): Answer;
+    createQuestion(question: Question<UniqueIdType>, answers: UniqueIdType[]): Promise<Question<UniqueIdType>>;
 
-    createUser(user: User): User;
+    createAnswer(answer: Answer<UniqueIdType>): Promise<Answer<UniqueIdType>>;
 
-    createUserAnswers(user: number, quiz: number, answers: { question: number, answer: number }[]): UserAnsweredQuiz;
+    createUser(user: User<UniqueIdType>): Promise<User<UniqueIdType>>;
 
-    getUsers(): User[];
+    createUserAnswers(
+        user: UniqueIdType,
+        quiz: UniqueIdType,
+        answers: { question: UniqueIdType, answer: UniqueIdType }[]
+    ): Promise<UserAnsweredQuiz<UniqueIdType>>;
 
-    getUserAnswers(user?: number): UserAnsweredQuiz[];
+    getUsers(): Promise<User<UniqueIdType>[]>;
+
+    getUserAnswers(user?: UniqueIdType): Promise<UserAnsweredQuiz<UniqueIdType>[]>;
 }
 
 export class Storage {
-    private static inst: IStorage;
+    private static inst: IStorage<UniqueId>;
 
     private constructor() {
     }
 
-    public static instance(): IStorage {
+    public static instance(): Promise<IStorage<UniqueId>> {
         if (this.inst === undefined) {
             this.inst = storages[process.env.STORAGE || 'RAM'];
+            MongoDBStorage.url = process.env.MONGODB_CONNECT_STRING;
+            return new Promise(res => this.inst.init().then(() => res(this.inst)));
         }
-        return this.inst;
+        return new Promise<IStorage<UniqueId>>(r => r(this.inst));
     }
 }

@@ -1,20 +1,22 @@
 import {
-    GraphQLBoolean, GraphQLInputObjectType,
+    GraphQLBoolean,
+    GraphQLInputObjectType,
     GraphQLInt,
     GraphQLList,
     GraphQLNonNull,
     GraphQLObjectType,
     GraphQLString,
-    GraphQLType
 } from "graphql";
 import { Answer } from "../index";
+import * as _ from 'lodash';
+const idType = _.includes(['MongoDB'], process.env.STORAGE) ? GraphQLString : GraphQLInt;
 
 export const answer = new GraphQLObjectType({
     name: 'Answer',
     description: 'An answer to a question',
     fields: () => ({
-        id: {
-            type: GraphQLNonNull(GraphQLInt),
+        _id: {
+            type: GraphQLNonNull(idType),
             description: 'Answer ID'
         },
         text: {
@@ -32,8 +34,8 @@ export const question = new GraphQLObjectType({
     name: 'Question',
     description: 'Question for quiz',
     fields: () => ({
-        id: {
-            type: GraphQLNonNull(GraphQLInt),
+        _id: {
+            type: GraphQLNonNull(idType),
             description: 'Question ID'
         },
         text: {
@@ -50,8 +52,8 @@ export const question = new GraphQLObjectType({
 export const quiz = new GraphQLObjectType({
     name: 'Quiz',
     fields: () => ({
-        id: {
-            type: GraphQLNonNull(GraphQLInt),
+        _id: {
+            type: GraphQLNonNull(idType),
             description: 'Quiz ID'
         },
         title: {
@@ -68,8 +70,8 @@ export const quiz = new GraphQLObjectType({
 export const user = new GraphQLObjectType({
     name: 'User',
     fields: () => ({
-        id: {
-            type: GraphQLNonNull(GraphQLInt),
+        _id: {
+            type: GraphQLNonNull(idType),
             description: 'User ID'
         },
         name: {
@@ -83,11 +85,11 @@ export const questionAnswerPair = new GraphQLInputObjectType({
     name: 'QuestionAnswerPair',
     fields: () => ({
         question: {
-            type: GraphQLNonNull(GraphQLInt),
+            type: GraphQLNonNull(idType),
             description: 'Question ID'
         },
         answer: {
-            type: GraphQLNonNull(GraphQLInt),
+            type: GraphQLNonNull(idType),
             description: 'Answer ID'
         },
     })
@@ -108,8 +110,8 @@ export const userAnsweredQuestion = new GraphQLObjectType({
 export const userAnsweredQuiz = new GraphQLObjectType({
     name: 'UserAnsweredQuiz',
     fields: () => ({
-        id: {
-            type: GraphQLNonNull(GraphQLInt),
+        _id: {
+            type: GraphQLNonNull(idType),
         },
         user: {
             type: user,

@@ -1,35 +1,46 @@
 import * as dotenv from 'dotenv';
 import * as express from 'express';
-import {routes} from "./routes";
 
 dotenv.load();
+
+import { routes } from "./routes";
+
 const app = express();
 const port = process.env.APP_PORT;
 
+const handle = (route: any, req: any, res: any) => {
+    try {
+        route.action(req, res);
+    } catch (e) {
+        res.status(500);
+        res.send(e.message);
+    }
+};
+
 routes.map(route => {
-  switch (route.method) {
-    case 'GET':
-      app.get(route.path, route.action);
-      break;
-    case 'POST':
-      app.post(route.path, route.action);
-      break;
-    case 'PUT':
-      app.put(route.path, route.action);
-      break;
-    case 'PATCH':
-      app.patch(route.path, route.action);
-      break;
-    case 'DELETE':
-      app.delete(route.path, route.action);
-      break;
-    case 'HEAD':
-      app.head(route.path, route.action);
-      break;
-    case 'ALL':
-      app.all(route.path, route.action);
-      break;
-  }
+    switch (route.method) {
+        case 'GET':
+            app.get(route.path, handle.bind(undefined, route));
+            break;
+        case 'POST':
+            app.post(route.path, handle.bind(undefined, route));
+            break;
+        case 'PUT':
+            app.put(route.path, handle.bind(undefined, route));
+            break;
+        case 'PATCH':
+            app.patch(route.path, handle.bind(undefined, route));
+            break;
+        case 'DELETE':
+            app.delete(route.path, handle.bind(undefined, route));
+            break;
+        case 'HEAD':
+            app.head(route.path, handle.bind(undefined, route));
+            break;
+        case 'ALL':
+            app.all(route.path, handle.bind(undefined, route));
+            break;
+    }
 });
 
 app.listen(port, () => console.log(`App listening on port ${port}!\nPress Ctrl+C to exit.`));

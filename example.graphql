@@ -1,0 +1,26 @@
+mutation insertUser {
+    createUser(name: "Jozef"){_id}
+}
+mutation insertPositiveAnswer {
+    ano: createAnswer(text: "Ano", isCorrect: true){_id}
+}
+mutation insertNegativeAnswer {
+    nie: createAnswer(text: "Nie", isCorrect: false){_id}
+}
+mutation insertQuestion {
+    createQuestion(text: "Dnes pivo?", answers: ["5bf85b68aedabe5556f0704d", "5bf85b76aedabe5556f0704e"]){_id}
+}
+mutation insertQuiz {
+    createQuiz(title: "Program", questions: ["5bf85b7caedabe5556f0704f"]){_id}
+}
+mutation answer {
+    answerQuestion(user: "5bf85b63aedabe5556f0704c", quiz: "5bf85b87aedabe5556f07050", answers: [{question: "5bf85b7caedabe5556f0704f", answer: "5bf85b68aedabe5556f0704d"}]){_id}
+}
+
+query answers {
+    userAnswers{_id, user{_id, name}, quiz{_id, title}, questions{question{_id, text}, answers{_id, text}}}
+}
+
+query users {
+    users{_id}
+}

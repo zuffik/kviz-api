@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLSchema } from "graphql";
+import { GraphQLInt, GraphQLObjectType, GraphQLSchema, GraphQLString } from "graphql";
 import { answer, question, questionAnswerPair, quiz, user, userAnsweredQuestion, userAnsweredQuiz } from "./types";
 import {
     answerQuestion,

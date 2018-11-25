@@ -5,6 +5,7 @@ import * as path from "path";
 import * as multer from 'multer';
 import * as fs from 'fs';
 import { uploadFiles } from "./controllers/UploadController";
+import cors from 'cors';
 
 const upload = multer({
     dest: path.join(__dirname, '/../upload/')
@@ -18,6 +19,7 @@ dotenv.load({
 const app = express();
 const port = process.env.APP_PORT;
 
+app.use(cors());
 app.use('/docs', express.static(path.join(__dirname, '/../docs/schema')));
 app.post('/upload', upload.array('upload'), uploadFiles);
 

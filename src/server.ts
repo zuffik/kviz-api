@@ -5,7 +5,7 @@ import * as path from "path";
 import * as multer from 'multer';
 import * as fs from 'fs';
 import { uploadFiles } from "./controllers/UploadController";
-import cors from 'cors';
+import * as cors from 'cors';
 
 const upload = multer({
     dest: path.join(__dirname, '/../upload/')

@@ -1,5 +1,5 @@
 import { IStorage } from "./Storage";
-import { Answer, Question, Quiz, User, UserAnsweredQuestion, UserAnsweredQuiz } from "../index";
+import { Answer, Question, Quiz, UploadedFile, User, UserAnsweredQuestion, UserAnsweredQuiz } from "../index";
 import * as mongodb from 'mongodb';
 import { Db, ObjectID } from 'mongodb';
 import * as _ from "lodash";
@@ -36,6 +36,9 @@ export class MongoDBStorage implements IStorage<string> {
                 }
                 if (!this.storage.collection('answeredQuizzes')) {
                     await this.storage.createCollection('answeredQuizzes');
+                }
+                if (!this.storage.collection('files')) {
+                    await this.storage.createCollection('files');
                 }
                 res();
             });
@@ -163,5 +166,15 @@ export class MongoDBStorage implements IStorage<string> {
                     text: q.questions.filter((i: any) => i._id !== qu._id)[0].text
                 } as UserAnsweredQuestion))
             } as UserAnsweredQuiz<string>)));
+    }
+
+    async saveFile(file: Express.Multer.File): Promise<UploadedFile<string>> {
+        const f: UploadedFile<string> = {
+            file: file.filename,
+            path: `/upload/${file.filename}`
+        };
+        const res = await this.storage.collection('files').insertOne(f);
+        f._id = res.insertedId.toHexString();
+        return f;
     }
 }

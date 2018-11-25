@@ -39,3 +39,10 @@ export interface UserAnsweredQuiz<UniqueIdType extends UniqueId = number> {
     quiz: Quiz;
     questions: UserAnsweredQuestion<UniqueIdType>[];
 }
+
+export interface UploadedFile<UniqueIdType extends UniqueId = number> {
+    _id?: UniqueIdType;
+    path: string;
+    file: string;
+}
+

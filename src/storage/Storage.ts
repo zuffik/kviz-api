@@ -1,4 +1,4 @@
-import { Answer, Question, Quiz, UniqueId, UniqueIdType as UIDT, User, UserAnsweredQuiz } from "../index";
+import { Answer, Question, Quiz, UniqueId, UploadedFile, User, UserAnsweredQuiz } from "../index";
 import { RAMStorage } from "./RAMStorage";
 import { MongoDBStorage } from "./MongoDBStorage";
 
@@ -30,6 +30,8 @@ export interface IStorage<UniqueIdType extends UniqueId = number> {
     getUsers(): Promise<User<UniqueIdType>[]>;
 
     getUserAnswers(user?: UniqueIdType): Promise<UserAnsweredQuiz<UniqueIdType>[]>;
+
+    saveFile(file: Express.Multer.File): Promise<UploadedFile<UniqueIdType>>;
 }
 
 export class Storage {

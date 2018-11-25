@@ -1,5 +1,5 @@
 import { IStorage } from "./Storage";
-import { Answer, Question, Quiz, User, UserAnsweredQuestion, UserAnsweredQuiz } from "../index";
+import { Answer, Question, Quiz, UploadedFile, User, UserAnsweredQuestion, UserAnsweredQuiz } from "../index";
 import * as _ from 'lodash';
 
 export class RAMStorage implements IStorage {
@@ -8,6 +8,7 @@ export class RAMStorage implements IStorage {
     answers: Answer[] = [];
     users: User[] = [];
     answeredQuizzes: UserAnsweredQuiz[] = [];
+    files: Express.Multer.File[] = [];
 
     async getQuizzes(): Promise<Quiz[]> {
         return this.quizzes;
@@ -80,5 +81,14 @@ export class RAMStorage implements IStorage {
 
     async init(): Promise<void> {
         return;
+    }
+
+    async saveFile(file: Express.Multer.File): Promise<UploadedFile<number>> {
+        this.files.push(file);
+        return {
+            file: file.filename,
+            path: `/upload/${file.filename}`,
+            _id: this.files.length
+        };
     }
 }

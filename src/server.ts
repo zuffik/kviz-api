@@ -2,13 +2,24 @@ import * as dotenv from 'dotenv';
 import * as express from 'express';
 import { routes } from "./routes";
 import * as path from "path";
+import * as multer from 'multer';
+import * as fs from 'fs';
+import { uploadFiles } from "./controllers/UploadController";
 
-dotenv.load();
+const upload = multer({
+    dest: path.join(__dirname, '/../upload/')
+});
+
+const local = path.join(__dirname, '/../.env.local');
+dotenv.load({
+    path: fs.existsSync(local) ? local : path.join(__dirname, '/../.env')
+});
 
 const app = express();
 const port = process.env.APP_PORT;
 
 app.use('/docs', express.static(path.join(__dirname, '/../docs/schema')));
+app.post('/upload', upload.array('upload'), uploadFiles);
 
 const handle = (route: any, req: any, res: any) => {
     try {

@@ -1,5 +1,5 @@
 import {
-    GraphQLBoolean,
+    GraphQLBoolean, GraphQLEnumType,
     GraphQLInputObjectType,
     GraphQLInt,
     GraphQLList,
@@ -41,6 +41,14 @@ export const question = new GraphQLObjectType({
         text: {
             type: GraphQLNonNull(GraphQLString),
             description: 'Text of an question'
+        },
+        type: {
+            type: GraphQLNonNull(GraphQLString),
+            description: 'Type of an question'
+        },
+        hasOtherAnswer: {
+            type: GraphQLNonNull(GraphQLBoolean),
+            description: 'Whether has "other" input'
         },
         answers: {
             type: GraphQLList(answer),
@@ -95,6 +103,20 @@ export const questionAnswerPair = new GraphQLInputObjectType({
     })
 });
 
+export const questionTextAnswerPair = new GraphQLInputObjectType({
+    name: 'QuestionTextAnswerPair',
+    fields: () => ({
+        question: {
+            type: GraphQLNonNull(idType),
+            description: 'Question ID'
+        },
+        answer: {
+            type: GraphQLNonNull(GraphQLString),
+            description: 'Answer'
+        },
+    })
+});
+
 export const userAnsweredQuestion = new GraphQLObjectType({
     name: 'UserAnsweredQuestion',
     fields: () => ({
@@ -103,6 +125,9 @@ export const userAnsweredQuestion = new GraphQLObjectType({
         },
         answers: {
             type: GraphQLList(answer)
+        },
+        text: {
+            type: GraphQLString
         }
     })
 });
@@ -123,4 +148,13 @@ export const userAnsweredQuiz = new GraphQLObjectType({
             type: GraphQLList(userAnsweredQuestion),
         },
     })
+});
+
+export const QuestionType = new GraphQLEnumType({
+    name: 'QuestionType',
+    values: {
+        text: {value: 'text'},
+        radio: {value: 'radio'},
+        checkbox: {value: 'checkbox'},
+    }
 });

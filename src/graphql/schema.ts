@@ -1,5 +1,14 @@
-import { GraphQLInt, GraphQLObjectType, GraphQLSchema, GraphQLString } from "graphql";
-import { answer, question, questionAnswerPair, quiz, user, userAnsweredQuestion, userAnsweredQuiz } from "./types";
+import { GraphQLObjectType, GraphQLSchema } from "graphql";
+import {
+    answer,
+    question,
+    questionAnswerPair,
+    questionTextAnswerPair, QuestionType,
+    quiz,
+    user,
+    userAnsweredQuestion,
+    userAnsweredQuiz
+} from "./types";
 import {
     answerQuestion,
     createAnswer,
@@ -12,7 +21,17 @@ import {
 } from "./queries";
 
 export const schema = new GraphQLSchema({
-    types: [quiz, question, answer, user, questionAnswerPair, userAnsweredQuestion, userAnsweredQuiz],
+    types: [
+        quiz,
+        question,
+        answer,
+        user,
+        questionAnswerPair,
+        userAnsweredQuestion,
+        userAnsweredQuiz,
+        questionTextAnswerPair,
+        QuestionType
+    ],
     query: new GraphQLObjectType({
         name: 'Query',
         fields: () => ({

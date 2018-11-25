@@ -2,6 +2,7 @@ import { IStorage } from "./Storage";
 import { Answer, Question, Quiz, User, UserAnsweredQuestion, UserAnsweredQuiz } from "../index";
 import * as mongodb from 'mongodb';
 import { Db, ObjectID } from 'mongodb';
+import * as _ from "lodash";
 
 const compat = (value: any) => {
     if (value._id && typeof value._id !== 'string') {
@@ -75,15 +76,18 @@ export class MongoDBStorage implements IStorage<string> {
         return await Promise.all((await this.storage.collection('quizzes').find().toArray())
             .map(async q => ({
                     ...q,
+                    _id: q._id.toString(),
                     questions: await Promise.all((
                         await this.storage.collection('questions')
-                            .find({_id: {$in: q.questions.map((i: any) => new ObjectID(i))}}).toArray()
+                            .find({_id: {$in: (q.questions || []).map((i: any) => new ObjectID(i))}}).toArray()
                     ).map(async qu => ({
                         ...qu,
+                        _id: qu._id.toString(),
                         answers: (
-                            await this.storage.collection('answers')
-                                .find({_id: {$in: qu.answers.map((i: any) => new ObjectID(i))}}).toArray()
-                        )
+                            (await this.storage.collection('answers').find({
+                                _id: {$in: (qu.answers || []).map((i: any) => new ObjectID(i))}
+                            }).toArray()).map(i => ({...i, _id: i._id.toString()}))
+                        ),
                     })))
                 })
             )
@@ -94,15 +98,29 @@ export class MongoDBStorage implements IStorage<string> {
         return await this.storage.collection('users').find().toArray();
     }
 
-    async createUserAnswers(user: string, quiz: string, answers: { question: string; answer: string }[]):
+    async createUserAnswers(
+        user: string,
+        quiz: string,
+        answers: { question: string, answer: string }[],
+        textAnswers: { question: string, answer: string }[]
+    ):
         Promise<UserAnsweredQuiz<string>> {
         const q: Quiz = await this.storage.collection('quizzes').findOne({_id: new ObjectID(quiz)});
         const u: User = await this.storage.collection('users').findOne({_id: new ObjectID(user)});
-        const questions: UserAnsweredQuestion<string>[] = await Promise.all(answers.map(async k => ({
+        let questions: UserAnsweredQuestion<string>[] = await Promise.all((answers || []).map(async k => {
+            const textAnswer = _.find(textAnswers, {question: k.question});
+            textAnswers = textAnswers.filter(a => a.question !== _.get(textAnswer, ['_id'], ''));
+            return ({
+                question: await this.storage.collection('questions').findOne({_id: new ObjectID(k.question)}),
+                answers: await (await this.storage.collection('answers')
+                    .find({_id: {$in: [new ObjectID(k.answer)]}})).toArray(),
+                text: _.get(textAnswer, ['answer'], '')
+            });
+        }));
+        questions = [...questions, ...(await Promise.all((textAnswers || []).map(async k => ({
             question: await this.storage.collection('questions').findOne({_id: new ObjectID(k.question)}),
-            answers: await (await this.storage.collection('answers').find({_id: {$in: [new ObjectID(k.answer)]}}))
-                .toArray()
-        })));
+            text: k.answer
+        }))))];
         const ans = {
             quiz: q,
             user: u,
@@ -114,7 +132,8 @@ export class MongoDBStorage implements IStorage<string> {
             user: ans.user._id,
             questions: ans.questions.map(q => ({
                 _id: q.question._id,
-                answers: q.answers.map(a => a._id)
+                answers: (q.answers || []).map(a => a._id),
+                text: q.text
             })),
         });
         ans._id = res.insertedId.toHexString();
@@ -140,7 +159,8 @@ export class MongoDBStorage implements IStorage<string> {
                                     .map((i: any) => new ObjectID(i))
                             }
                         }).toArray())
-                        .map(compat)
+                        .map(compat),
+                    text: q.questions.filter((i: any) => i._id !== qu._id)[0].text
                 } as UserAnsweredQuestion))
             } as UserAnsweredQuiz<string>)));
     }

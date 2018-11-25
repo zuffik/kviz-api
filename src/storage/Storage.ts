@@ -23,7 +23,8 @@ export interface IStorage<UniqueIdType extends UniqueId = number> {
     createUserAnswers(
         user: UniqueIdType,
         quiz: UniqueIdType,
-        answers: { question: UniqueIdType, answer: UniqueIdType }[]
+        answers: { question: UniqueIdType, answer: UniqueIdType }[],
+        textAnswers: { question: UniqueIdType, answer: string }[]
     ): Promise<UserAnsweredQuiz<UniqueIdType>>;
 
     getUsers(): Promise<User<UniqueIdType>[]>;
@@ -40,7 +41,7 @@ export class Storage {
     public static instance(): Promise<IStorage<UniqueId>> {
         if (this.inst === undefined) {
             this.inst = storages[process.env.STORAGE || 'RAM'];
-            MongoDBStorage.url = process.env.MONGODB_CONNECT_STRING;
+            MongoDBStorage.url = process.env.MONGODB_CONNECT_STRING || '';
             return new Promise(res => this.inst.init().then(() => res(this.inst)));
         }
         return new Promise<IStorage<UniqueId>>(r => r(this.inst));

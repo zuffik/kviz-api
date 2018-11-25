@@ -12,6 +12,8 @@ export interface Question<UniqueIdType extends UniqueId = number> {
     _id?: UniqueIdType;
     text: string;
     answers: Answer<UniqueIdType>[];
+    type: 'radio' | 'checkbox' | 'text';
+    hasOtherAnswer: boolean;
 }
 
 export interface Quiz<UniqueIdType extends UniqueId = number> {
@@ -27,7 +29,8 @@ export interface User<UniqueIdType extends UniqueId = number> {
 
 export interface UserAnsweredQuestion<UniqueIdType extends UniqueId = number> {
     question: Question<UniqueIdType>;
-    answers: Answer<UniqueIdType>[];
+    answers?: Answer<UniqueIdType>[];
+    text?: string;
 }
 
 export interface UserAnsweredQuiz<UniqueIdType extends UniqueId = number> {

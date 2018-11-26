@@ -55,7 +55,7 @@ export const createQuiz = {
         questions: {type: GraphQLList(idType), description: 'List of question ids'},
         image: {type: GraphQLString, description: 'Cover image for quiz'},
     },
-    resolve: async (val: any, q: any) => (await Storage.instance()).updateQuiz({
+    resolve: async (val: any, q: any) => (await Storage.instance()).createQuiz({
         title: q.title as string,
         subtitle: q.subtitle as string,
         image: q.image as string,

@@ -1,26 +1,38 @@
-import * as dotenv from 'dotenv';
+import './env';
 import * as express from 'express';
 import { routes } from "./routes";
 import * as path from "path";
 import * as multer from 'multer';
-import * as fs from 'fs';
 import { uploadFiles } from "./controllers/UploadController";
 import * as cors from 'cors';
-
-const upload = multer({
-    dest: path.join(__dirname, '/../upload/')
-});
-
-const local = path.join(__dirname, '/../.env.local');
-dotenv.load({
-    path: fs.existsSync(local) ? local : path.join(__dirname, '/../.env')
-});
+import * as jwt from 'express-jwt';
+import * as _ from "lodash";
+import { blacklist } from "./controllers/UserController";
 
 const app = express();
 const port = process.env.APP_PORT;
 
+// Middlewares
+app.use(express.json());
+app.use(express.urlencoded());
+app.use('/docs', express.static(path.join(__dirname, '/../../docs/schema')));
+app.use(jwt({
+    secret: process.env.JWT_SECRET || ''
+}).unless({
+    path: ['/user/token', '/user/login', '/docs', '/graphql'],
+    custom: req => _.includes(blacklist, req.header('Authorization'))
+}));
+app.use((err: any, req: any, res: any, next: any) => {
+    if (err.name === 'UnauthorizedError') {
+        res.status(err.status || 500).json(err);
+    }
+});
 app.use(cors());
-app.use('/docs', express.static(path.join(__dirname, '/../docs/schema')));
+
+// Routes
+const upload = multer({
+    dest: path.join(__dirname, '/../../upload/')
+});
 app.post('/upload', upload.array('upload'), uploadFiles);
 
 const handle = (route: any, req: any, res: any) => {

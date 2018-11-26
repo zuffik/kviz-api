@@ -44,7 +44,8 @@ export const createQuiz = {
     },
     resolve: async (val: any, q: any) => (await Storage.instance()).createQuiz({
         title: q.title as string,
-        questions: []
+        questions: [],
+        replaces: {}
     }, q.questions)
 };
 
@@ -80,6 +81,7 @@ export const createUser = {
     description: 'Creates an user',
     args: {
         name: {type: GraphQLString, description: 'User name'},
+        password: {type: GraphQLString, description: 'User password'},
     },
     resolve: async (val: any, user: User) => (await Storage.instance()).createUser(user)
 };

@@ -1,6 +1,7 @@
 import * as graphqlHTTP from "express-graphql";
 import { schema } from "./graphql/schema";
 import { serveFile } from "./controllers/UploadController";
+import { userLogin, userLogout } from "./controllers/UserController";
 
 const gql = {schema};
 
@@ -29,6 +30,16 @@ const routes: {
         path: '/upload/:file',
         method: 'GET',
         action: serveFile
+    },
+    {
+        path: '/user/login',
+        method: 'POST',
+        action: userLogin
+    },
+    {
+        path: '/user/logout',
+        method: 'GET',
+        action: userLogout
     }
 ];
 

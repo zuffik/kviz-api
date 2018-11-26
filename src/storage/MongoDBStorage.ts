@@ -3,6 +3,7 @@ import { Answer, Question, Quiz, UploadedFile, User, UserAnsweredQuestion, UserA
 import * as mongodb from 'mongodb';
 import { Db, ObjectID } from 'mongodb';
 import * as _ from "lodash";
+import * as password_hash from 'password_hash';
 
 const compat = (value: any) => {
     if (value._id && typeof value._id !== 'string') {
@@ -70,6 +71,9 @@ export class MongoDBStorage implements IStorage<string> {
     }
 
     async createUser(user: User<string>): Promise<User<string>> {
+        if (user.password) {
+            user.password = password_hash(user.password).hash(process.env.PASSWORD_SALT);
+        }
         const res = await this.storage.collection('users').insertOne(user);
         user._id = res.insertedId.toHexString();
         return user;
@@ -176,5 +180,9 @@ export class MongoDBStorage implements IStorage<string> {
         const res = await this.storage.collection('files').insertOne(f);
         f._id = res.insertedId.toHexString();
         return f;
+    }
+
+    async getUserByName(name: string): Promise<User<string>> {
+        return await this.storage.collection('users').findOne({name});
     }
 }

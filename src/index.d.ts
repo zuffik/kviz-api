@@ -20,11 +20,14 @@ export interface Quiz<UniqueIdType extends UniqueId = number> {
     _id?: UniqueIdType;
     title: string;
     questions: Question<UniqueIdType>[];
+    /** key should be timestamp with time of replacement */
+    replaces: {[key: number]: UniqueIdType};
 }
 
 export interface User<UniqueIdType extends UniqueId = number> {
     _id?: UniqueIdType;
     name: string;
+    password?: string;
 }
 
 export interface UserAnsweredQuestion<UniqueIdType extends UniqueId = number> {

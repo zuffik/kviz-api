@@ -479,7 +479,7 @@
             "args": [
               {
                 "name": "title",
-                "description": null,
+                "description": "Quiz title",
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
@@ -489,7 +489,7 @@
               },
               {
                 "name": "questions",
-                "description": null,
+                "description": "List of question ids",
                 "type": {
                   "kind": "LIST",
                   "name": null,
@@ -516,7 +516,7 @@
             "args": [
               {
                 "name": "text",
-                "description": null,
+                "description": "Question text",
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
@@ -526,7 +526,7 @@
               },
               {
                 "name": "answers",
-                "description": null,
+                "description": "List of answer ids (in case of checkbox or radio type)",
                 "type": {
                   "kind": "LIST",
                   "name": null,
@@ -540,13 +540,13 @@
               },
               {
                 "name": "type",
-                "description": null,
+                "description": "Either text, radio or checkbox",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
+                    "kind": "ENUM",
+                    "name": "QuestionType",
                     "ofType": null
                   }
                 },
@@ -554,7 +554,7 @@
               },
               {
                 "name": "hasOtherAnswer",
-                "description": null,
+                "description": "Whether has other text field",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Boolean",
@@ -577,7 +577,7 @@
             "args": [
               {
                 "name": "text",
-                "description": null,
+                "description": "Answer text",
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
@@ -587,7 +587,7 @@
               },
               {
                 "name": "isCorrect",
-                "description": null,
+                "description": "Whether answer is correct",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Boolean",
@@ -610,7 +610,17 @@
             "args": [
               {
                 "name": "name",
-                "description": null,
+                "description": "User name",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "password",
+                "description": "User password",
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
@@ -633,7 +643,7 @@
             "args": [
               {
                 "name": "user",
-                "description": null,
+                "description": "User ID",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
@@ -647,7 +657,7 @@
               },
               {
                 "name": "quiz",
-                "description": null,
+                "description": "Quiz ID",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
@@ -700,6 +710,35 @@
         "inputFields": null,
         "interfaces": [],
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "QuestionType",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "text",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "radio",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "checkbox",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {

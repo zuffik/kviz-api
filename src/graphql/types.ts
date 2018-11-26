@@ -9,6 +9,7 @@ import {
 } from "graphql";
 import { Answer } from "../index";
 import * as _ from 'lodash';
+
 const idType = _.includes(['MongoDB'], process.env.STORAGE) ? GraphQLString : GraphQLInt;
 
 export const answer = new GraphQLObjectType({

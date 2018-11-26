@@ -47,7 +47,7 @@ export class RAMStorage implements IStorage {
         textAnswers: { question: number, answer: string }[]
     ):
         Promise<UserAnsweredQuiz> {
-        const q = _.find(this.quizzes, ['id', quiz]) || {_id: 0, questions: [], title: ''};
+        const q: Quiz = _.find(this.quizzes, ['id', quiz]) || {_id: 0, questions: [], title: '', replaces: {}};
         const u = _.find(this.users, ['id', user]) || {_id: 0, name: ''};
         const id = this.answeredQuizzes.length > 0 ?
             (this.answeredQuizzes[this.answeredQuizzes.length - 1]._id || 0) + 1 : 1;
@@ -90,5 +90,9 @@ export class RAMStorage implements IStorage {
             path: `/upload/${file.filename}`,
             _id: this.files.length
         };
+    }
+
+    async getUserByName(name: string): Promise<User<number>> {
+        return _.find(this.users, ['name', name]) as User<number>;
     }
 }

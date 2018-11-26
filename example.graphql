@@ -1,5 +1,5 @@
 mutation insertUser {
-    createUser(name: "Jozef"){_id}
+    createUser(name: "zuffik", password: "112111"){_id}
 }
 mutation insertPositiveAnswer {
     ano: createAnswer(text: "Ano", isCorrect: true){_id}

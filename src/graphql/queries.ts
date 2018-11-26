@@ -1,4 +1,4 @@
-import { GraphQLBoolean, GraphQLEnumType, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLString } from "graphql";
+import { GraphQLBoolean, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLString } from "graphql";
 import {
     answer,
     question,
@@ -12,38 +12,73 @@ import {
 import { Answer, UniqueId, User } from "../index";
 import { Storage } from "../storage/Storage";
 import * as _ from "lodash";
+import * as moment from 'moment';
 
 const idType = _.includes(['MongoDB'], process.env.STORAGE) ? GraphQLString : GraphQLInt;
 
 export const quizQuery = {
     type: GraphQLList(quiz),
-    args: {},
-    resolve: async (root: any, {}) => (await Storage.instance()).getQuizzes()
+    args: {
+        _id: {type: idType, description: 'Quiz ID'}
+    },
+    resolve: async (root: any, a: { _id?: UniqueId }) => (await (await Storage.instance()).getQuizzes(a)).map(q => ({
+        ...q,
+        replaces: _.toPairs(q.replaces).map(value => ({
+            datetime: moment(parseInt(value[0], 10)).format(),
+            _id: value[1]
+        }))
+    }))
 };
 
 export const usersQuery = {
     type: GraphQLList(user),
-    args: {},
-    resolve: async (root: any, {}) => (await Storage.instance()).getUsers()
+    args: {
+        _id: {type: idType, description: 'User ID'}
+    },
+    resolve: async (root: any, a: { _id?: UniqueId }) => (await Storage.instance()).getUsers(a)
 };
 
 export const userAnswersQuery = {
     type: GraphQLList(userAnsweredQuiz),
     args: {
-        id: {type: idType}
+        _id: {type: idType, description: 'User ID'}
     },
-    resolve: async (root: any, a: { user?: UniqueId }) => (await Storage.instance()).getUserAnswers(a.user)
+    resolve: async (root: any, a: { _id?: UniqueId }) => (await Storage.instance()).getUserAnswers(a._id)
 };
 
 export const createQuiz = {
     type: quiz,
     description: 'Creates a quiz',
     args: {
-        title: {type: GraphQLString, description: 'Quiz title'},
+        title: {type: GraphQLNonNull(GraphQLString), description: 'Quiz title'},
+        subtitle: {type: GraphQLString, description: 'Quiz subtitle'},
         questions: {type: GraphQLList(idType), description: 'List of question ids'},
+        image: {type: GraphQLString, description: 'Cover image for quiz'},
     },
-    resolve: async (val: any, q: any) => (await Storage.instance()).createQuiz({
+    resolve: async (val: any, q: any) => (await Storage.instance()).updateQuiz({
         title: q.title as string,
+        subtitle: q.subtitle as string,
+        image: q.image as string,
+        questions: [],
+        replaces: {}
+    }, q.questions)
+};
+
+export const editQuiz = {
+    type: quiz,
+    description: 'Updates a quiz',
+    args: {
+        _id: {type: GraphQLNonNull(idType), description: 'Quiz _id to be edited'},
+        title: {type: GraphQLNonNull(GraphQLString), description: 'Quiz title'},
+        subtitle: {type: GraphQLString, description: 'Quiz subtitle'},
+        questions: {type: GraphQLList(idType), description: 'List of question ids'},
+        image: {type: GraphQLString, description: 'Cover image for quiz'},
+    },
+    resolve: async (val: any, q: any) => (await Storage.instance()).updateQuiz({
+        _id: q._id as string,
+        title: q.title as string,
+        subtitle: q.subtitle as string,
+        image: q.image as string,
         questions: [],
         replaces: {}
     }, q.questions)
@@ -53,7 +88,7 @@ export const createQuestion = {
     type: question,
     description: 'Creates a question',
     args: {
-        text: {type: GraphQLString, description: 'Question text'},
+        text: {type: GraphQLNonNull(GraphQLString), description: 'Question text'},
         answers: {type: GraphQLList(idType), description: 'List of answer ids (in case of checkbox or radio type)'},
         type: {type: GraphQLNonNull(QuestionType), description: 'Either text, radio or checkbox'},
         hasOtherAnswer: {type: GraphQLBoolean, description: 'Whether has other text field'},

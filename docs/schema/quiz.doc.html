@@ -45,11 +45,6 @@
                 Boolean
             </a>
         </li>
-        <li  title="Int">
-            <a href="int.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
-                Int
-            </a>
-        </li>
         <li  title="String">
             <a href="string.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
                 String
@@ -93,6 +88,16 @@
         <li class="slds-is-active" title="Quiz">
             <a href="quiz.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
                 Quiz
+            </a>
+        </li>
+        <li  title="replacedQuizzes">
+            <a href="replacedquizzes.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                replacedQuizzes
+            </a>
+        </li>
+        <li  title="uploadedFile">
+            <a href="uploadedfile.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                uploadedFile
             </a>
         </li>
         <li  title="User">
@@ -203,7 +208,7 @@
             </a>
             GraphQL Schema definition
         </h2>
-        <code class="highlight"><ul class="code" style="padding-left:42px"><li><span class="keyword operator ts">type</span> <span class="identifier">Quiz</span> {</li><li></li><li><span class="tab"><span class="comment line">#   Quiz ID</span></span></li><li><span class="tab"><span class="meta">_id</span>: <a class="support type" href="int.doc.html">Int</a>! </span></li><li></li><li><span class="tab"><span class="comment line">#   Title of a quiz</span></span></li><li><span class="tab"><span class="meta">title</span>: <a class="support type" href="string.doc.html">String</a>! </span></li><li></li><li><span class="tab"><span class="comment line">#   Quiz questions</span></span></li><li><span class="tab"><span class="meta">questions</span>: [<a class="support type" href="question.doc.html">Question</a>] </span></li><li>}</li></ul></code>
+        <code class="highlight"><ul class="code" style="padding-left:42px"><li><span class="keyword operator ts">type</span> <span class="identifier">Quiz</span> {</li><li></li><li><span class="tab"><span class="comment line">#   Quiz ID</span></span></li><li><span class="tab"><span class="meta">_id</span>: <a class="support type" href="string.doc.html">String</a>! </span></li><li></li><li><span class="tab"><span class="comment line">#   Title of a quiz</span></span></li><li><span class="tab"><span class="meta">title</span>: <a class="support type" href="string.doc.html">String</a>! </span></li><li></li><li><span class="tab"><span class="comment line">#   Subtitle of a quiz</span></span></li><li><span class="tab"><span class="meta">subtitle</span>: <a class="support type" href="string.doc.html">String</a> </span></li><li></li><li><span class="tab"><span class="comment line">#   Cover image</span></span></li><li><span class="tab"><span class="meta">image</span>: <a class="support type" href="uploadedfile.doc.html">uploadedFile</a> </span></li><li></li><li><span class="tab"><span class="comment line">#   Quiz questions</span></span></li><li><span class="tab"><span class="meta">questions</span>: [<a class="support type" href="question.doc.html">Question</a>] </span></li><li></li><li><span class="tab"><span class="comment line">#   Quizzes replaced by current one</span></span></li><li><span class="tab"><span class="meta">replaces</span>: [<a class="support type" href="replacedquizzes.doc.html">replacedQuizzes</a>] </span></li><li>}</li></ul></code>
     </div>
 </section>
 <section>

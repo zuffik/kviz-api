@@ -45,11 +45,6 @@
                 Boolean
             </a>
         </li>
-        <li  title="Int">
-            <a href="int.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
-                Int
-            </a>
-        </li>
         <li  title="String">
             <a href="string.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
                 String
@@ -93,6 +88,16 @@
         <li  title="Quiz">
             <a href="quiz.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
                 Quiz
+            </a>
+        </li>
+        <li  title="replacedQuizzes">
+            <a href="replacedquizzes.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                replacedQuizzes
+            </a>
+        </li>
+        <li  title="uploadedFile">
+            <a href="uploadedfile.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                uploadedFile
             </a>
         </li>
         <li  title="User">
@@ -203,7 +208,7 @@
             </a>
             GraphQL Schema definition
         </h2>
-        <code class="highlight"><ul class="code" style="padding-left:42px"><li><span class="keyword operator ts">type</span> <span class="identifier">Query</span> {</li><li></li><li><span class="tab"><span class="meta">quizzes</span>: [<a class="support type" href="quiz.doc.html">Quiz</a>] </span></li><li></li><li><span class="tab"><span class="meta">users</span>: [<a class="support type" href="user.doc.html">User</a>] </span></li><li></li><li><span class="tab"><span class="comment line"># Arguments</span></span></li><li><span class="tab"><span class="comment line">#   <strong>id</strong>: [<strong>Not documented</strong>]</span></span></li><li><span class="tab"><span class="meta">userAnswers</span>(<span class="meta">id</span>: <a class="support type" href="int.doc.html">Int</a>): [<a class="support type" href="useransweredquiz.doc.html">UserAnsweredQuiz</a>] </span></li><li>}</li></ul></code>
+        <code class="highlight"><ul class="code" style="padding-left:42px"><li><span class="keyword operator ts">type</span> <span class="identifier">Query</span> {</li><li></li><li><span class="tab"><span class="comment line"># Arguments</span></span></li><li><span class="tab"><span class="comment line">#   <strong>_id</strong>: Quiz ID</span></span></li><li><span class="tab"><span class="meta">quizzes</span>(<span class="meta">_id</span>: <a class="support type" href="string.doc.html">String</a>): [<a class="support type" href="quiz.doc.html">Quiz</a>] </span></li><li></li><li><span class="tab"><span class="comment line"># Arguments</span></span></li><li><span class="tab"><span class="comment line">#   <strong>_id</strong>: User ID</span></span></li><li><span class="tab"><span class="meta">users</span>(<span class="meta">_id</span>: <a class="support type" href="string.doc.html">String</a>): [<a class="support type" href="user.doc.html">User</a>] </span></li><li></li><li><span class="tab"><span class="comment line"># Arguments</span></span></li><li><span class="tab"><span class="comment line">#   <strong>_id</strong>: User ID</span></span></li><li><span class="tab"><span class="meta">userAnswers</span>(<span class="meta">_id</span>: <a class="support type" href="string.doc.html">String</a>): [<a class="support type" href="useransweredquiz.doc.html">UserAnsweredQuiz</a>] </span></li><li>}</li></ul></code>
     </div>
 </section>
 <section>

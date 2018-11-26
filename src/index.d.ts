@@ -12,13 +12,15 @@ export interface Question<UniqueIdType extends UniqueId = number> {
     _id?: UniqueIdType;
     text: string;
     answers: Answer<UniqueIdType>[];
-    type: 'radio' | 'checkbox' | 'text';
+    type: 'radio' | 'checkbox' | 'text' | 'number';
     hasOtherAnswer: boolean;
 }
 
 export interface Quiz<UniqueIdType extends UniqueId = number> {
     _id?: UniqueIdType;
     title: string;
+    subtitle: string;
+    image?: UploadedFile<UniqueIdType> | string;
     questions: Question<UniqueIdType>[];
     /** key should be timestamp with time of replacement */
     replaces: {[key: number]: UniqueIdType};

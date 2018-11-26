@@ -1,18 +1,18 @@
-import { Answer, Question, Quiz, UniqueId, UploadedFile, User, UserAnsweredQuiz, UniqueIdType as UniqueIdTypeEnum } from "../index";
-import { RAMStorage } from "./RAMStorage";
+import { Answer, Question, Quiz, UniqueId, UploadedFile, User, UserAnsweredQuiz } from "../index";
 import { MongoDBStorage } from "./MongoDBStorage";
 
 const storages: { [key: string]: IStorage<UniqueId> } = {
-    RAM: new RAMStorage(),
     MongoDB: new MongoDBStorage()
 };
 
 export interface IStorage<UniqueIdType extends UniqueId = number> {
     init(): Promise<void>;
 
-    getQuizzes(): Promise<Quiz<UniqueIdType>[]>;
+    getQuizzes(filter?: {_id?: UniqueIdType}): Promise<Quiz<UniqueIdType>[]>;
 
     createQuiz(quiz: Quiz<UniqueIdType>, questions: UniqueIdType[]): Promise<Quiz<UniqueIdType>>;
+
+    updateQuiz(quiz: Quiz<UniqueIdType>, questions: UniqueIdType[]): Promise<Quiz<UniqueIdType>>;
 
     createQuestion(question: Question<UniqueIdType>, answers: UniqueIdType[]): Promise<Question<UniqueIdType>>;
 
@@ -27,7 +27,7 @@ export interface IStorage<UniqueIdType extends UniqueId = number> {
         textAnswers: { question: UniqueIdType, answer: string }[]
     ): Promise<UserAnsweredQuiz<UniqueIdType>>;
 
-    getUsers(): Promise<User<UniqueIdType>[]>;
+    getUsers(filter?: {_id?: UniqueIdType}): Promise<User<UniqueIdType>[]>;
 
     getUserAnswers(user?: UniqueIdType): Promise<UserAnsweredQuiz<UniqueIdType>[]>;
 

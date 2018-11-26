@@ -1,6 +1,6 @@
 import { sign } from 'jsonwebtoken';
 import * as _ from 'lodash';
-import { Response, Request } from "express";
+import { Request, Response } from "express";
 import { Storage } from "../storage/Storage";
 import * as password_hash from 'password_hash';
 import { UniqueId, User } from "../index";
@@ -47,6 +47,6 @@ export const userLogin = async (req: any, res: Response) => {
 };
 
 export const userLogout = (req: Request, res: any) => {
-    blacklist.push(req.header("Authorization") || '');
+    blacklist.push(req.header('Authorization') || '');
     res.status(202).send();
 };

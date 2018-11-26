@@ -6,26 +6,31 @@ import * as multer from 'multer';
 import { uploadFiles } from "./controllers/UploadController";
 import * as cors from 'cors';
 import * as jwt from 'express-jwt';
-import * as _ from "lodash";
 import { blacklist } from "./controllers/UserController";
+import * as _ from "lodash";
 
 const app = express();
 const port = process.env.APP_PORT;
 
 // Middlewares
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({
+    extended: true
+}));
 app.use('/docs', express.static(path.join(__dirname, '/../../docs/schema')));
 app.use(jwt({
-    secret: process.env.JWT_SECRET || ''
+    secret: process.env.JWT_SECRET || '',
+    isRevoked: (req, payload, done) => {
+        done(undefined, _.includes(blacklist, req.header('Authorization') || ''));
+    }
 }).unless({
     path: ['/user/token', '/user/login', '/docs', '/graphql'],
-    custom: req => _.includes(blacklist, req.header('Authorization'))
 }));
 app.use((err: any, req: any, res: any, next: any) => {
-    if (err.name === 'UnauthorizedError') {
-        res.status(err.status || 500).json(err);
-    }
+    res.status(err.status || 500).json({
+        error: true,
+        ...err
+    });
 });
 app.use(cors());
 

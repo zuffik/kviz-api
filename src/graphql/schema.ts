@@ -3,8 +3,10 @@ import {
     answer,
     question,
     questionAnswerPair,
-    questionTextAnswerPair, QuestionType,
+    questionTextAnswerPair,
+    QuestionType,
     quiz,
+    uploadedFile,
     user,
     userAnsweredQuestion,
     userAnsweredQuiz
@@ -15,6 +17,7 @@ import {
     createQuestion,
     createQuiz,
     createUser,
+    editQuiz,
     quizQuery,
     userAnswersQuery,
     usersQuery
@@ -30,7 +33,8 @@ export const schema = new GraphQLSchema({
         userAnsweredQuestion,
         userAnsweredQuiz,
         questionTextAnswerPair,
-        QuestionType
+        QuestionType,
+        uploadedFile
     ],
     query: new GraphQLObjectType({
         name: 'Query',
@@ -44,6 +48,7 @@ export const schema = new GraphQLSchema({
         name: 'Mutation',
         fields: () => ({
             createQuiz,
+            editQuiz,
             createQuestion,
             createAnswer,
             createUser,

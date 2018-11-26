@@ -8,17 +8,21 @@ mutation insertNegativeAnswer {
     nie: createAnswer(text: "Nie", isCorrect: false){_id}
 }
 mutation insertQuestion {
-    createQuestion(text: "Dnes pivo?", type: "text"){_id}
+    createQuestion(text: "Dnes pivo?", type: text){_id}
 }
 mutation insertQuiz {
-    createQuiz(title: "Program", questions: ["5bfa76c9a9aac00efc9dee70"]){_id}
+    createQuiz(title: "Program", questions: [], image: "5bfc3bd86c3d5342e19ff939"){_id}
 }
 mutation answer {
-    answerQuestion(user: "5bfa7528b7b4d70d700ab52b", quiz: "5bfa76dba9aac00efc9dee71", textAnswers: [{question: "5bfa76c9a9aac00efc9dee70", answer: "samozrejme"}]){_id}
+    answerQuestion(user: "5bfa7528b7b4d70d700ab52b", quiz: "5bfc4439017cbf44f4ba4965"){_id}
 }
 
 query quizzes {
-    quizzes{_id,title, questions{_id, text, type, hasOtherAnswer, answers{_id, isCorrect, text}}}
+    quizzes{_id,title, image{_id,path}, replaces {_id, datetime}, questions{_id, text, type, hasOtherAnswer, answers{_id, isCorrect, text}}}
+}
+
+mutation update {
+    editQuiz(_id: "5bfc3bf86c3d5342e19ff93a", image: "5bfc3bd86c3d5342e19ff939", title: "AAAA"){_id}
 }
 
 query answers {
@@ -26,5 +30,5 @@ query answers {
 }
 
 query users {
-    users{_id}
+    users(_id:"5bfa7528b7b4d70d700ab52b"){_id}
 }

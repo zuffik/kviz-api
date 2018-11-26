@@ -1,5 +1,6 @@
 import {
-    GraphQLBoolean, GraphQLEnumType,
+    GraphQLBoolean,
+    GraphQLEnumType,
     GraphQLInputObjectType,
     GraphQLInt,
     GraphQLList,
@@ -69,9 +70,21 @@ export const quiz = new GraphQLObjectType({
             type: GraphQLNonNull(GraphQLString),
             description: 'Title of a quiz'
         },
+        subtitle: {
+            type: GraphQLString,
+            description: 'Subtitle of a quiz'
+        },
+        image: {
+            type: uploadedFile,
+            description: 'Cover image'
+        },
         questions: {
             type: GraphQLList(question),
             description: 'Quiz questions'
+        },
+        replaces: {
+            type: GraphQLList(replacedQuizzes),
+            description: 'Quizzes replaced by current one'
         }
     })
 });
@@ -157,5 +170,29 @@ export const QuestionType = new GraphQLEnumType({
         text: {value: 'text'},
         radio: {value: 'radio'},
         checkbox: {value: 'checkbox'},
+        number: {value: 'number'},
     }
+});
+
+export const uploadedFile = new GraphQLObjectType({
+    name: 'uploadedFile',
+    fields: () => ({
+        _id: {
+            type: GraphQLNonNull(idType),
+        },
+        path: {
+            type: GraphQLString
+        },
+        file: {
+            type: GraphQLString
+        }
+    })
+});
+
+export const replacedQuizzes = new GraphQLObjectType({
+    name: 'replacedQuizzes',
+    fields: () => ({
+        datetime: {type: GraphQLNonNull(GraphQLString), description: 'A time when was quiz replaced (updated)'},
+        _id: {type: GraphQLNonNull(idType), description: 'What quiz was replaced'},
+    })
 });

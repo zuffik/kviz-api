@@ -4,10 +4,18 @@ import * as mongodb from 'mongodb';
 import { Db, ObjectID } from 'mongodb';
 import * as _ from "lodash";
 import * as password_hash from 'password_hash';
+import * as moment from "moment";
 
 const compat = (value: any) => {
-    if (value._id && typeof value._id !== 'string') {
+    if (value && value._id && typeof value._id !== 'string') {
         value._id = value._id.toHexString();
+    }
+    return value;
+};
+
+const toObjectId = (value: any) => {
+    if (value && value._id && typeof value._id === 'string') {
+        value._id = new ObjectID(value._id);
     }
     return value;
 };
@@ -79,11 +87,13 @@ export class MongoDBStorage implements IStorage<string> {
         return user;
     }
 
-    async getQuizzes(): Promise<Quiz<string>[]> {
-        return await Promise.all((await this.storage.collection('quizzes').find().toArray())
+    async getQuizzes(filter?: { _id?: string }): Promise<Quiz<string>[]> {
+        return await Promise.all((await this.storage.collection('quizzes').find(toObjectId(filter)).toArray())
             .map(async q => ({
                     ...q,
                     _id: q._id.toString(),
+                    image: compat(typeof q.image === 'string' ?
+                        await this.storage.collection('files').findOne({_id: new ObjectID(q.image)}) : q.image),
                     questions: await Promise.all((
                         await this.storage.collection('questions')
                             .find({_id: {$in: (q.questions || []).map((i: any) => new ObjectID(i))}}).toArray()
@@ -101,8 +111,8 @@ export class MongoDBStorage implements IStorage<string> {
         );
     }
 
-    async getUsers(): Promise<User<string>[]> {
-        return await this.storage.collection('users').find().toArray();
+    async getUsers(filter?: { _id?: string }): Promise<User<string>[]> {
+        return (await this.storage.collection('users').find(toObjectId(filter)).toArray()).map(compat);
     }
 
     async createUserAnswers(
@@ -148,28 +158,35 @@ export class MongoDBStorage implements IStorage<string> {
     }
 
     async getUserAnswers(user?: string): Promise<UserAnsweredQuiz<string>[]> {
-        return await Promise.all((await this.storage.collection('answeredQuizzes').find().toArray())
-            .map(async q => ({
-                ...compat(q),
-                quiz: compat(await this.storage.collection('quizzes').findOne({_id: new ObjectID(q.quiz)})),
-                user: compat(await this.storage.collection('users').findOne({_id: new ObjectID(q.user)})),
-                questions: (await this.storage.collection('questions').find({
-                    _id: {
-                        $in: q.questions.map((i: any) => i._id)
-                    }
-                }).toArray()).map(async qu => ({
-                    question: compat(qu),
-                    answers: (await this.storage.collection('answers')
-                        .find({
-                            _id: {
-                                $in: q.questions.filter((i: any) => i._id !== qu._id)[0].answers
-                                    .map((i: any) => new ObjectID(i))
-                            }
-                        }).toArray())
-                        .map(compat),
-                    text: q.questions.filter((i: any) => i._id !== qu._id)[0].text
-                } as UserAnsweredQuestion))
-            } as UserAnsweredQuiz<string>)));
+        const quizzes = _.uniq(_.flatten((await Promise.all((await this.storage.collection('answeredQuizzes')
+            .find(user ? {user: new ObjectID(user)} : undefined).toArray())
+            .map(async q => [
+                q.quiz,
+                ..._.values((await this.storage.collection('quizzes').findOne({_id: new ObjectID(q.quiz)})).replaces)
+            ]))).map(q => q.map(qu => new ObjectID(qu)))));
+        return await Promise.all((await Promise.all(await this.storage.collection('answeredQuizzes').find({
+            quiz: {$in: quizzes}
+        }).toArray())).map(async q => ({
+            ...compat(q),
+            quiz: compat(await this.storage.collection('quizzes').findOne({_id: new ObjectID(q.quiz)})),
+            user: compat(await this.storage.collection('users').findOne({_id: new ObjectID(q.user)})),
+            questions: (await this.storage.collection('questions').find({
+                _id: {
+                    $in: q.questions.map((i: any) => i._id)
+                }
+            }).toArray()).map(async qu => ({
+                question: compat(qu),
+                answers: (await this.storage.collection('answers')
+                    .find({
+                        _id: {
+                            $in: q.questions.filter((i: any) => i._id !== qu._id)[0].answers
+                                .map((i: any) => new ObjectID(i))
+                        }
+                    }).toArray())
+                    .map(compat),
+                text: q.questions.filter((i: any) => i._id !== qu._id)[0].text
+            } as UserAnsweredQuestion))
+        } as UserAnsweredQuiz<string>)));
     }
 
     async saveFile(file: Express.Multer.File): Promise<UploadedFile<string>> {
@@ -184,5 +201,19 @@ export class MongoDBStorage implements IStorage<string> {
 
     async getUserByName(name: string): Promise<User<string>> {
         return await this.storage.collection('users').findOne({name});
+    }
+
+    async updateQuiz(quiz: Quiz<string>, questions: string[]): Promise<Quiz<string>> {
+        const q = await this.storage.collection('quizzes').findOne({_id: new ObjectID(quiz._id)});
+        if (!q) {
+            throw new Error(`Quiz with _id: ${quiz._id} does not exists.`);
+        }
+        quiz.replaces = {
+            ...q.replaces,
+            [+moment()]: quiz._id
+        };
+        quiz._id = undefined;
+        quiz._id = (await this.storage.collection('quizzes').insertOne(quiz)).insertedId.toHexString();
+        return quiz;
     }
 }

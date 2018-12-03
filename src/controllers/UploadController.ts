@@ -12,7 +12,7 @@ export const uploadFiles = async (req: any, res: any) => {
 };
 
 export const serveFile = async (req: any, res: any) => {
-    const file = path.join(__dirname, `/../../upload/${req.params.file}`);
+    const file = path.join(__dirname, `/../../../upload/${req.params.file}`);
     try {
         if (fs.existsSync(file)) {
             const buffer = readChunk.sync(file, 0, 8);

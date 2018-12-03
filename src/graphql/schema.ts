@@ -1,6 +1,6 @@
 import { GraphQLObjectType, GraphQLSchema } from "graphql";
 import {
-    answer,
+    answer, image,
     question,
     questionAnswerPair,
     questionTextAnswerPair,
@@ -17,7 +17,7 @@ import {
     createQuestion,
     createQuiz,
     createUser,
-    editQuiz,
+    editQuiz, imagesQuery,
     quizQuery,
     userAnswersQuery,
     usersQuery
@@ -34,14 +34,16 @@ export const schema = new GraphQLSchema({
         userAnsweredQuiz,
         questionTextAnswerPair,
         QuestionType,
-        uploadedFile
+        uploadedFile,
+        image
     ],
     query: new GraphQLObjectType({
         name: 'Query',
         fields: () => ({
             quizzes: quizQuery,
             users: usersQuery,
-            userAnswers: userAnswersQuery
+            userAnswers: userAnswersQuery,
+            images: imagesQuery
         })
     }),
     mutation: new GraphQLObjectType({

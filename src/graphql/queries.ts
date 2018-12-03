@@ -1,6 +1,6 @@
 import { GraphQLBoolean, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLString } from "graphql";
 import {
-    answer,
+    answer, image,
     question,
     questionAnswerPair,
     questionTextAnswerPair,
@@ -36,6 +36,11 @@ export const usersQuery = {
         _id: {type: idType, description: 'User ID'}
     },
     resolve: async (root: any, a: { _id?: UniqueId }) => (await Storage.instance()).getUsers(a)
+};
+
+export const imagesQuery = {
+    type: GraphQLList(image),
+    resolve: async (root: any, a: {}) => (await Storage.instance()).getImages()
 };
 
 export const userAnswersQuery = {

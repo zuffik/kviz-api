@@ -8,7 +8,7 @@ const storages: { [key: string]: IStorage<UniqueId> } = {
 export interface IStorage<UniqueIdType extends UniqueId = number> {
     init(): Promise<void>;
 
-    getQuizzes(filter?: {_id?: UniqueIdType}): Promise<Quiz<UniqueIdType>[]>;
+    getQuizzes(filter?: { _id?: UniqueIdType }): Promise<Quiz<UniqueIdType>[]>;
 
     createQuiz(quiz: Quiz<UniqueIdType>, questions: UniqueIdType[]): Promise<Quiz<UniqueIdType>>;
 
@@ -27,13 +27,15 @@ export interface IStorage<UniqueIdType extends UniqueId = number> {
         textAnswers: { question: UniqueIdType, answer: string }[]
     ): Promise<UserAnsweredQuiz<UniqueIdType>>;
 
-    getUsers(filter?: {_id?: UniqueIdType}): Promise<User<UniqueIdType>[]>;
+    getUsers(filter?: { _id?: UniqueIdType }): Promise<User<UniqueIdType>[]>;
 
     getUserAnswers(user?: UniqueIdType): Promise<UserAnsweredQuiz<UniqueIdType>[]>;
 
     saveFile(file: Express.Multer.File): Promise<UploadedFile<UniqueIdType>>;
 
     getUserByName(name: string): Promise<User<UniqueIdType> | undefined>;
+
+    getImages(): Promise<UploadedFile[]>;
 }
 
 export class Storage {

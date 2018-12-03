@@ -103,6 +103,24 @@ export const user = new GraphQLObjectType({
     })
 });
 
+export const image = new GraphQLObjectType({
+    name: 'Image',
+    fields: () => ({
+        _id: {
+            type: GraphQLNonNull(idType),
+            description: 'Image ID'
+        },
+        path: {
+            type: GraphQLNonNull(GraphQLString),
+            description: 'Path from root'
+        },
+        file: {
+            type: GraphQLNonNull(GraphQLString),
+            description: 'Name of file'
+        },
+    })
+});
+
 export const questionAnswerPair = new GraphQLInputObjectType({
     name: 'QuestionAnswerPair',
     fields: () => ({

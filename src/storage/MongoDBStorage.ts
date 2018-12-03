@@ -216,4 +216,8 @@ export class MongoDBStorage implements IStorage<string> {
         quiz._id = (await this.storage.collection('quizzes').insertOne(quiz)).insertedId.toHexString();
         return quiz;
     }
+
+    async getImages(): Promise<UploadedFile[]> {
+        return (await this.storage.collection('files').find().toArray()).map(compat);
+    }
 }

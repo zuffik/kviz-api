@@ -8,6 +8,8 @@ import * as cors from 'cors';
 import * as jwt from 'express-jwt';
 import { blacklist } from "./controllers/UserController";
 import * as _ from "lodash";
+import * as crypto from "crypto";
+import * as mime from 'mime-to-extensions';
 
 const app = express();
 const port = process.env.APP_PORT;
@@ -34,10 +36,19 @@ app.use((err: any, req: any, res: any, next: any) => {
 });
 app.use(cors());
 
-// Routes
-const upload = multer({
-    dest: path.join(__dirname, '/../../upload/')
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './uploads/');
+    },
+    filename: (req, file, cb) => {
+        crypto.pseudoRandomBytes(16, (err, raw) => {
+            cb(null, raw.toString('hex') + Date.now() + '.' + mime.extension(file.mimetype));
+        });
+    }
 });
+const upload = multer({storage});
+
+// Routes
 app.post('/upload', upload.array('upload'), uploadFiles);
 
 const handle = (route: any, req: any, res: any) => {

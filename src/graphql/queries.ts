@@ -65,7 +65,8 @@ export const createQuiz = {
         subtitle: q.subtitle as string,
         image: q.image as string,
         questions: [],
-        replaces: {}
+        replaces: {},
+        createdAt: +moment()
     }, q.questions)
 };
 
@@ -85,7 +86,8 @@ export const editQuiz = {
         subtitle: q.subtitle as string,
         image: q.image as string,
         questions: [],
-        replaces: {}
+        replaces: {},
+        createdAt: +moment()
     }, q.questions)
 };
 
@@ -102,7 +104,8 @@ export const createQuestion = {
         text: q.text as string,
         answers: [],
         type: q.type as 'radio' | 'checkbox' | 'text',
-        hasOtherAnswer: !!q.hasOtherAnswer
+        hasOtherAnswer: !!q.hasOtherAnswer,
+        createdAt: +moment()
     }, q.answers)
 };
 
@@ -113,7 +116,10 @@ export const createAnswer = {
         text: {type: GraphQLString, description: 'Answer text'},
         isCorrect: {type: GraphQLBoolean, description: 'Whether answer is correct'},
     },
-    resolve: async (val: any, answer: Answer) => (await Storage.instance()).createAnswer(answer)
+    resolve: async (val: any, answer: Answer) => (await Storage.instance()).createAnswer({
+        ...answer,
+        createdAt: +moment()
+    })
 };
 
 export const createUser = {
@@ -123,7 +129,10 @@ export const createUser = {
         name: {type: GraphQLString, description: 'User name'},
         password: {type: GraphQLString, description: 'User password'},
     },
-    resolve: async (val: any, user: User) => (await Storage.instance()).createUser(user)
+    resolve: async (val: any, user: User) => (await Storage.instance()).createUser({
+        ...user,
+        createdAt: +moment()
+    })
 };
 
 export const answerQuestion = {

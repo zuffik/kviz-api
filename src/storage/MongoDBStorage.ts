@@ -131,7 +131,8 @@ export class MongoDBStorage implements IStorage<string> {
                 question: await this.storage.collection('questions').findOne({_id: new ObjectID(k.question)}),
                 answers: await (await this.storage.collection('answers')
                     .find({_id: {$in: [new ObjectID(k.answer)]}})).toArray(),
-                text: _.get(textAnswer, ['answer'], '')
+                text: _.get(textAnswer, ['answer'], ''),
+                createdAt: +moment()
             });
         }));
         questions = [...questions, ...(await Promise.all((textAnswers || []).map(async k => ({
@@ -141,7 +142,8 @@ export class MongoDBStorage implements IStorage<string> {
         const ans = {
             quiz: q,
             user: u,
-            questions
+            questions,
+            createdAt: +moment()
         } as UserAnsweredQuiz<string>;
         const res = await this.storage.collection('answeredQuizzes').insertOne({
             ...ans,
@@ -192,7 +194,8 @@ export class MongoDBStorage implements IStorage<string> {
     async saveFile(file: Express.Multer.File): Promise<UploadedFile<string>> {
         const f: UploadedFile<string> = {
             file: file.filename,
-            path: `/upload/${file.filename}`
+            path: `/upload/${file.filename}`,
+            createdAt: +moment()
         };
         const res = await this.storage.collection('files').insertOne(f);
         f._id = res.insertedId.toHexString();

@@ -4,12 +4,14 @@ export type UniqueIdType = 'number' | 'string';
 
 export interface Answer<UniqueIdType extends UniqueId = number> {
     _id?: UniqueIdType;
+    createdAt: number;
     text: string;
     isCorrect: boolean;
 }
 
 export interface Question<UniqueIdType extends UniqueId = number> {
     _id?: UniqueIdType;
+    createdAt: number;
     text: string;
     answers: Answer<UniqueIdType>[];
     type: 'radio' | 'checkbox' | 'text' | 'number';
@@ -18,6 +20,7 @@ export interface Question<UniqueIdType extends UniqueId = number> {
 
 export interface Quiz<UniqueIdType extends UniqueId = number> {
     _id?: UniqueIdType;
+    createdAt: number;
     title: string;
     subtitle: string;
     image?: UploadedFile<UniqueIdType> | string;
@@ -28,6 +31,7 @@ export interface Quiz<UniqueIdType extends UniqueId = number> {
 
 export interface User<UniqueIdType extends UniqueId = number> {
     _id?: UniqueIdType;
+    createdAt: number;
     name: string;
     password?: string;
 }
@@ -40,6 +44,7 @@ export interface UserAnsweredQuestion<UniqueIdType extends UniqueId = number> {
 
 export interface UserAnsweredQuiz<UniqueIdType extends UniqueId = number> {
     _id?: UniqueIdType;
+    createdAt: number;
     user: User;
     quiz: Quiz;
     questions: UserAnsweredQuestion<UniqueIdType>[];
@@ -47,6 +52,7 @@ export interface UserAnsweredQuiz<UniqueIdType extends UniqueId = number> {
 
 export interface UploadedFile<UniqueIdType extends UniqueId = number> {
     _id?: UniqueIdType;
+    createdAt: number;
     path: string;
     file: string;
 }

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="./styles/graphdoc.css" />
-    <title>UserAnsweredQuestion</title>
+    <title>Image</title>
     <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700" rel="stylesheet"><link type="text/css" rel="stylesheet" href="./assets/code.css" /><link type="text/css" rel="stylesheet" href="./assets/require-by.css" />
 </head>
 <body class="slds-scrollable--y">
@@ -80,7 +80,7 @@
                 Answer
             </a>
         </li>
-        <li  title="Image">
+        <li class="slds-is-active" title="Image">
             <a href="image.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
                 Image
             </a>
@@ -110,7 +110,7 @@
                 User
             </a>
         </li>
-        <li class="slds-is-active" title="UserAnsweredQuestion">
+        <li  title="UserAnsweredQuestion">
             <a href="useransweredquestion.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
                 UserAnsweredQuestion
             </a>
@@ -201,7 +201,7 @@
     </div>
     <div class="container">
         <p class="slds-text-title--caps slds-text-color--weak">OBJECT</p>
-        <h1 class="slds-text-heading--large">UserAnsweredQuestion</h1>
+        <h1 class="slds-text-heading--large">Image</h1>
         <div class="slds-text-body--regular"></div>
     </div>
 </section>
@@ -213,7 +213,7 @@
             </a>
             GraphQL Schema definition
         </h2>
-        <code class="highlight"><ul class="code" style="padding-left:28px"><li><span class="keyword operator ts">type</span> <span class="identifier">UserAnsweredQuestion</span> {</li><li></li><li><span class="tab"><span class="meta">question</span>: <a class="support type" href="question.doc.html">Question</a> </span></li><li></li><li><span class="tab"><span class="meta">answers</span>: [<a class="support type" href="answer.doc.html">Answer</a>] </span></li><li></li><li><span class="tab"><span class="meta">text</span>: <a class="support type" href="string.doc.html">String</a> </span></li><li>}</li></ul></code>
+        <code class="highlight"><ul class="code" style="padding-left:42px"><li><span class="keyword operator ts">type</span> <span class="identifier">Image</span> {</li><li></li><li><span class="tab"><span class="comment line">#   Image ID</span></span></li><li><span class="tab"><span class="meta">_id</span>: <a class="support type" href="string.doc.html">String</a>! </span></li><li></li><li><span class="tab"><span class="comment line">#   Path from root</span></span></li><li><span class="tab"><span class="meta">path</span>: <a class="support type" href="string.doc.html">String</a>! </span></li><li></li><li><span class="tab"><span class="comment line">#   Name of file</span></span></li><li><span class="tab"><span class="meta">file</span>: <a class="support type" href="string.doc.html">String</a>! </span></li><li>}</li></ul></code>
     </div>
 </section>
 <section>
@@ -224,7 +224,7 @@
             </a>
             Require by
         </h2>
-        <ul class="require-by"><li><a href="useransweredquiz.doc.html" title="UserAnsweredQuiz - ">UserAnsweredQuiz<em>null</em></a><li></ul>
+        <ul class="require-by"><li><a href="query.doc.html" title="Query - ">Query<em>null</em></a><li></ul>
     </div>
 </section>
 <footer>

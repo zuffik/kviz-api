@@ -70,12 +70,19 @@ export class MongoDBStorage implements IStorage<string> {
     }
 
     async createQuiz(quiz: Quiz<string>, questions: string[]): Promise<Quiz<string>> {
-        const res = await this.storage.collection('quizzes').insertOne({
-            ...quiz,
-            questions
-        });
-        quiz._id = res.insertedId.toHexString();
-        return quiz;
+        if (questions) {
+            const res = await this.storage.collection('quizzes').insertOne({
+                ...quiz,
+                questions
+            });
+            quiz._id = res.insertedId.toHexString();
+            return quiz;
+        }
+        const questionList = await Promise.all(quiz.questions.map(async (question: Question<string>) => {
+            const answers = await Promise.all(question.answers.map(this.createAnswer));
+            return await this.createQuestion(question, answers.map(a => a._id as string));
+        }));
+        return this.createQuiz(quiz, questionList.map(q => q._id as string));
     }
 
     async createUser(user: User<string>): Promise<User<string>> {
@@ -126,7 +133,7 @@ export class MongoDBStorage implements IStorage<string> {
         const u: User = await this.storage.collection('users').findOne({_id: new ObjectID(user)});
         let questions: UserAnsweredQuestion<string>[] = await Promise.all((answers || []).map(async k => {
             const textAnswer = _.find(textAnswers, {question: k.question});
-            textAnswers = textAnswers.filter(a => a.question !== _.get(textAnswer, ['_id'], ''));
+            textAnswers = (textAnswers || []).filter(a => a.question !== _.get(textAnswer, ['_id'], ''));
             return ({
                 question: await this.storage.collection('questions').findOne({_id: new ObjectID(k.question)}),
                 answers: await (await this.storage.collection('answers')

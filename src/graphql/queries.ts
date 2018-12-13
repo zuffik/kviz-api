@@ -9,7 +9,7 @@ import {
     user,
     userAnsweredQuiz
 } from "./types";
-import { Answer, UniqueId, User } from "../index";
+import { Answer, Quiz, UniqueId, User } from "../index";
 import { Storage } from "../storage/Storage";
 import * as _ from "lodash";
 import * as moment from 'moment';
@@ -68,6 +68,18 @@ export const createQuiz = {
         replaces: {},
         createdAt: +moment()
     }, q.questions)
+};
+
+export const createFullQuiz = {
+    type: quiz,
+    description: 'Creates a quiz from full quiz DTO',
+    args: {
+        quiz: {
+            type: quiz,
+            description: 'Quiz DTO'
+        }
+    },
+    resolve: async (val: any, q: Quiz<string>) => (await Storage.instance()).createQuiz(q)
 };
 
 export const editQuiz = {

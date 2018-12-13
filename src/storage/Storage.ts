@@ -10,7 +10,7 @@ export interface IStorage<UniqueIdType extends UniqueId = number> {
 
     getQuizzes(filter?: { _id?: UniqueIdType }): Promise<Quiz<UniqueIdType>[]>;
 
-    createQuiz(quiz: Quiz<UniqueIdType>, questions: UniqueIdType[]): Promise<Quiz<UniqueIdType>>;
+    createQuiz(quiz: Quiz<UniqueIdType>, questions?: UniqueIdType[]): Promise<Quiz<UniqueIdType>>;
 
     updateQuiz(quiz: Quiz<UniqueIdType>, questions: UniqueIdType[]): Promise<Quiz<UniqueIdType>>;
 

@@ -20,5 +20,5 @@ quizzes.forEach(async (q, i) => {
             filter: (o, p) => p !== 'createdAt'
         })}) {_id}
         }`
-    }).then(a => console.log(a));
+    });
 });

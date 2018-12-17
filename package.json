@@ -65,6 +65,7 @@
     "@types/node": "^7.10.2",
     "@types/read-chunk": "^2.1.0",
     "@types/supertest": "^2.0.0",
+    "axios": "^0.18.0",
     "concurrently": "^3.4.0",
     "get-graphql-schema": "^2.1.2",
     "jest": "^19.0.2",

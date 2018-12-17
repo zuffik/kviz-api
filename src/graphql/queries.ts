@@ -5,7 +5,7 @@ import {
     questionAnswerPair,
     questionTextAnswerPair,
     QuestionType,
-    quiz,
+    quiz, quizInput,
     user,
     userAnsweredQuiz
 } from "./types";
@@ -68,6 +68,15 @@ export const createQuiz = {
         replaces: {},
         createdAt: +moment()
     }, q.questions)
+};
+
+export const createQuizFromObject = {
+    type: quiz,
+    description: 'Creates a quiz',
+    args: {
+        quiz: {type: quizInput, description: 'Quiz'}
+    },
+    resolve: async (val: any, q: {quiz: Quiz<string>}) => (await Storage.instance()).createQuiz(q.quiz)
 };
 
 export const editQuiz = {

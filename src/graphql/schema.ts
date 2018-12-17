@@ -1,21 +1,21 @@
 import { GraphQLObjectType, GraphQLSchema } from "graphql";
 import {
-    answer, image,
+    answer, answerInput, image, imageInput,
     question,
-    questionAnswerPair,
+    questionAnswerPair, questionInput,
     questionTextAnswerPair,
     QuestionType,
-    quiz,
-    uploadedFile,
+    quiz, quizInput, replacedQuizzesInput,
+    uploadedFile, uploadedFileInput,
     user,
     userAnsweredQuestion,
-    userAnsweredQuiz
+    userAnsweredQuiz, userInput
 } from "./types";
 import {
     answerQuestion,
     createAnswer,
     createQuestion,
-    createQuiz,
+    createQuiz, createQuizFromObject,
     createUser,
     editQuiz, imagesQuery,
     quizQuery,
@@ -26,6 +26,13 @@ import {
 export const schema = new GraphQLSchema({
     types: [
         quiz,
+        answerInput,
+        questionInput,
+        quizInput,
+        userInput,
+        imageInput,
+        uploadedFileInput,
+        replacedQuizzesInput,
         question,
         answer,
         user,
@@ -50,6 +57,7 @@ export const schema = new GraphQLSchema({
         name: 'Mutation',
         fields: () => ({
             createQuiz,
+            createQuizFromObject,
             editQuiz,
             createQuestion,
             createAnswer,

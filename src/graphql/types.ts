@@ -121,6 +121,114 @@ export const image = new GraphQLObjectType({
     })
 });
 
+export const answerInput = new GraphQLInputObjectType({
+    name: 'AnswerInput',
+    description: 'An answer to a question',
+    fields: () => ({
+        _id: {
+            type: GraphQLNonNull(idType),
+            description: 'Answer ID'
+        },
+        text: {
+            type: GraphQLNonNull(GraphQLString),
+            description: 'Text of an answer'
+        },
+        isCorrect: {
+            type: GraphQLNonNull(GraphQLBoolean),
+            description: 'Whether an answer is correct'
+        }
+    })
+});
+
+export const questionInput = new GraphQLInputObjectType({
+    name: 'QuestionInput',
+    description: 'Question for quiz',
+    fields: () => ({
+        _id: {
+            type: GraphQLNonNull(idType),
+            description: 'Question ID'
+        },
+        text: {
+            type: GraphQLNonNull(GraphQLString),
+            description: 'Text of an question'
+        },
+        type: {
+            type: GraphQLNonNull(GraphQLString),
+            description: 'Type of an question'
+        },
+        hasOtherAnswer: {
+            type: GraphQLNonNull(GraphQLBoolean),
+            description: 'Whether has "other" input'
+        },
+        answers: {
+            type: GraphQLList(answerInput),
+            description: 'Possible answers'
+        }
+    })
+});
+
+export const quizInput = new GraphQLInputObjectType({
+    name: 'QuizInput',
+    fields: () => ({
+        _id: {
+            type: GraphQLNonNull(idType),
+            description: 'Quiz ID'
+        },
+        title: {
+            type: GraphQLNonNull(GraphQLString),
+            description: 'Title of a quiz'
+        },
+        subtitle: {
+            type: GraphQLString,
+            description: 'Subtitle of a quiz'
+        },
+        image: {
+            type: uploadedFileInput,
+            description: 'Cover image'
+        },
+        questions: {
+            type: GraphQLList(questionInput),
+            description: 'Quiz questions'
+        },
+        replaces: {
+            type: GraphQLList(replacedQuizzesInput),
+            description: 'Quizzes replaced by current one'
+        }
+    })
+});
+
+export const userInput = new GraphQLInputObjectType({
+    name: 'UserInput',
+    fields: () => ({
+        _id: {
+            type: GraphQLNonNull(idType),
+            description: 'User ID'
+        },
+        name: {
+            type: GraphQLNonNull(GraphQLString),
+            description: 'Name of an quiz'
+        },
+    })
+});
+
+export const imageInput = new GraphQLInputObjectType({
+    name: 'ImageInput',
+    fields: () => ({
+        _id: {
+            type: GraphQLNonNull(idType),
+            description: 'Image ID'
+        },
+        path: {
+            type: GraphQLNonNull(GraphQLString),
+            description: 'Path from root'
+        },
+        file: {
+            type: GraphQLNonNull(GraphQLString),
+            description: 'Name of file'
+        },
+    })
+});
+
 export const questionAnswerPair = new GraphQLInputObjectType({
     name: 'QuestionAnswerPair',
     fields: () => ({
@@ -207,8 +315,30 @@ export const uploadedFile = new GraphQLObjectType({
     })
 });
 
+export const uploadedFileInput = new GraphQLInputObjectType({
+    name: 'uploadedFileInput',
+    fields: () => ({
+        _id: {
+            type: GraphQLNonNull(idType),
+        },
+        path: {
+            type: GraphQLString
+        },
+        file: {
+            type: GraphQLString
+        }
+    })
+});
+
 export const replacedQuizzes = new GraphQLObjectType({
     name: 'replacedQuizzes',
+    fields: () => ({
+        datetime: {type: GraphQLNonNull(GraphQLString), description: 'A time when was quiz replaced (updated)'},
+        _id: {type: GraphQLNonNull(idType), description: 'What quiz was replaced'},
+    })
+});
+export const replacedQuizzesInput = new GraphQLInputObjectType({
+    name: 'replacedQuizzesInput',
     fields: () => ({
         datetime: {type: GraphQLNonNull(GraphQLString), description: 'A time when was quiz replaced (updated)'},
         _id: {type: GraphQLNonNull(idType), description: 'What quiz was replaced'},

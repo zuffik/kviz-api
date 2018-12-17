@@ -15,10 +15,8 @@ const app = express();
 const port = process.env.APP_PORT;
 
 // Middlewares
-app.use(express.json());
-app.use(express.urlencoded({
-    extended: true
-}));
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb', extended: true}));
 app.use('/docs', express.static(path.join(__dirname, '/../../docs/schema')));
 app.use(jwt({
     secret: process.env.JWT_SECRET || '',

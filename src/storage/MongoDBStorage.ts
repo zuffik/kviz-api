@@ -129,6 +129,7 @@ export class MongoDBStorage implements IStorage<string> {
         user?: string
     ):
         Promise<UserAnsweredQuiz<string>> {
+        answers = answers.filter(a => a.answer !== 'on');
         const q: Quiz = await this.storage.collection('quizzes').findOne({_id: new ObjectID(quiz)});
         let u: User | undefined;
         if (user) {

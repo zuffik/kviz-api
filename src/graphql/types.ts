@@ -126,7 +126,7 @@ export const answerInput = new GraphQLInputObjectType({
     description: 'An answer to a question',
     fields: () => ({
         _id: {
-            type: GraphQLNonNull(idType),
+            type: idType,
             description: 'Answer ID'
         },
         text: {

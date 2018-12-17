@@ -160,7 +160,7 @@ export class MongoDBStorage implements IStorage<string> {
             ...ans,
             quiz: ans.quiz._id,
             user: (ans.user || {_id: undefined})._id,
-            questions: ans.questions.map(q => ({
+            questions: (ans.questions || []).map(q => ({
                 _id: q.question._id,
                 answers: (q.answers || []).map(a => a._id),
                 text: q.text

@@ -15,6 +15,7 @@ const app = express();
 const port = process.env.APP_PORT;
 
 // Middlewares
+app.use(req => console.log(JSON.stringify(req.body)));
 app.use(express.json());
 app.use(express.urlencoded({
     extended: true

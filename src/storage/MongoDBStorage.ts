@@ -217,7 +217,7 @@ export class MongoDBStorage implements IStorage<string> {
         return await this.storage.collection('users').findOne({name});
     }
 
-    async updateQuiz(quiz: Quiz<string>, questions: string[]): Promise<Quiz<string>> {
+    async updateQuiz(quiz: Quiz<string>, questions?: string[]): Promise<Quiz<string>> {
         const q = await this.storage.collection('quizzes').findOne({_id: new ObjectID(quiz._id)});
         if (!q) {
             throw new Error(`Quiz with _id: ${quiz._id} does not exists.`);
@@ -226,6 +226,11 @@ export class MongoDBStorage implements IStorage<string> {
             ...q.replaces,
             [+moment()]: quiz._id
         };
+        quiz.questions = (questions ? await this.storage.collection('questions').find({
+            _id: {
+                $in: questions.map(toObjectId)
+            }
+        }) : quiz.questions) as Question<string>[];
         quiz._id = undefined;
         quiz._id = (await this.storage.collection('quizzes').insertOne(quiz)).insertedId.toHexString();
         return quiz;

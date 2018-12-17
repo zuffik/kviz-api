@@ -100,6 +100,15 @@ export const editQuiz = {
     }, q.questions)
 };
 
+export const editQuizFromObject = {
+    type: quiz,
+    description: 'Updates a quiz',
+    args: {
+        quiz: {type: quizInput, description: 'Quiz'}
+    },
+    resolve: async (val: any, q: {quiz: Quiz<string>}) => (await Storage.instance()).updateQuiz(q.quiz)
+};
+
 export const createQuestion = {
     type: question,
     description: 'Creates a question',

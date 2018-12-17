@@ -145,7 +145,7 @@ export const questionInput = new GraphQLInputObjectType({
     description: 'Question for quiz',
     fields: () => ({
         _id: {
-            type: GraphQLNonNull(idType),
+            type: idType,
             description: 'Question ID'
         },
         text: {
@@ -171,7 +171,7 @@ export const quizInput = new GraphQLInputObjectType({
     name: 'QuizInput',
     fields: () => ({
         _id: {
-            type: GraphQLNonNull(idType),
+            type: idType,
             description: 'Quiz ID'
         },
         title: {
@@ -201,7 +201,7 @@ export const userInput = new GraphQLInputObjectType({
     name: 'UserInput',
     fields: () => ({
         _id: {
-            type: GraphQLNonNull(idType),
+            type: idType,
             description: 'User ID'
         },
         name: {
@@ -215,7 +215,7 @@ export const imageInput = new GraphQLInputObjectType({
     name: 'ImageInput',
     fields: () => ({
         _id: {
-            type: GraphQLNonNull(idType),
+            type: idType,
             description: 'Image ID'
         },
         path: {
@@ -319,7 +319,7 @@ export const uploadedFileInput = new GraphQLInputObjectType({
     name: 'uploadedFileInput',
     fields: () => ({
         _id: {
-            type: GraphQLNonNull(idType),
+            type: idType,
         },
         path: {
             type: GraphQLString

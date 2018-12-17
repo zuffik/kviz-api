@@ -17,7 +17,7 @@ import {
     createQuestion,
     createQuiz, createQuizFromObject,
     createUser,
-    editQuiz, imagesQuery,
+    editQuiz, editQuizFromObject, imagesQuery,
     quizQuery,
     userAnswersQuery,
     usersQuery
@@ -59,6 +59,7 @@ export const schema = new GraphQLSchema({
             createQuiz,
             createQuizFromObject,
             editQuiz,
+            editQuizFromObject,
             createQuestion,
             createAnswer,
             createUser,

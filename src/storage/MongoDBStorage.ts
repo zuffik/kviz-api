@@ -78,11 +78,12 @@ export class MongoDBStorage implements IStorage<string> {
             quiz._id = res.insertedId.toHexString();
             return quiz;
         }
-        const questionList = await Promise.all(quiz.questions.map(async (question: Question<string>) => {
-            const answers = await Promise.all(question.answers.map(this.createAnswer));
-            return await this.createQuestion(question, answers.map(a => a._id as string));
-        }));
-        return this.createQuiz(quiz, questionList.map(q => q._id as string));
+        const questionList = await Promise.all((quiz.questions || []).map(
+            async (question: Question<string>) => {
+                const answers = await Promise.all((question.answers || []).map(this.createAnswer));
+                return await this.createQuestion(question, (answers || []).map(a => a._id as string));
+            }));
+        return this.createQuiz(quiz, (questionList || []).map(q => q._id as string));
     }
 
     async createUser(user: User<string>): Promise<User<string>> {

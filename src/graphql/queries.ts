@@ -70,18 +70,6 @@ export const createQuiz = {
     }, q.questions)
 };
 
-export const createFullQuiz = {
-    type: quiz,
-    description: 'Creates a quiz from full quiz DTO',
-    args: {
-        quiz: {
-            type: quiz,
-            description: 'Quiz DTO'
-        }
-    },
-    resolve: async (val: any, q: Quiz<string>) => (await Storage.instance()).createQuiz(q)
-};
-
 export const editQuiz = {
     type: quiz,
     description: 'Updates a quiz',
@@ -151,7 +139,7 @@ export const answerQuestion = {
     type: userAnsweredQuiz,
     description: 'Creates an user answer to question',
     args: {
-        user: {type: GraphQLNonNull(idType), description: 'User ID'},
+        user: {type: idType, description: 'User ID'},
         quiz: {type: GraphQLNonNull(idType), description: 'Quiz ID'},
         answers: {type: GraphQLList(questionAnswerPair), description: 'List of answered questions'},
         textAnswers: {type: GraphQLList(questionTextAnswerPair), description: 'List of answered questions'},
@@ -162,5 +150,5 @@ export const answerQuestion = {
         answers: { question: UniqueId, answer: UniqueId }[],
         textAnswers: { question: UniqueId, answer: string }[]
     }) =>
-        (await Storage.instance()).createUserAnswers(a.user, a.quiz, a.answers, a.textAnswers)
+        (await Storage.instance()).createUserAnswers(a.quiz, a.answers, a.textAnswers, a.user)
 };

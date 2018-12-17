@@ -45,7 +45,7 @@ export interface UserAnsweredQuestion<UniqueIdType extends UniqueId = number> {
 export interface UserAnsweredQuiz<UniqueIdType extends UniqueId = number> {
     _id?: UniqueIdType;
     createdAt: number;
-    user: User;
+    user?: User;
     quiz: Quiz;
     questions: UserAnsweredQuestion<UniqueIdType>[];
 }

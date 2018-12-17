@@ -21,10 +21,10 @@ export interface IStorage<UniqueIdType extends UniqueId = number> {
     createUser(user: User<UniqueIdType>): Promise<User<UniqueIdType>>;
 
     createUserAnswers(
-        user: UniqueIdType,
         quiz: UniqueIdType,
         answers: { question: UniqueIdType, answer: UniqueIdType }[],
-        textAnswers: { question: UniqueIdType, answer: string }[]
+        textAnswers: { question: UniqueIdType, answer: string }[],
+        user?: UniqueIdType
     ): Promise<UserAnsweredQuiz<UniqueIdType>>;
 
     getUsers(filter?: { _id?: UniqueIdType }): Promise<User<UniqueIdType>[]>;

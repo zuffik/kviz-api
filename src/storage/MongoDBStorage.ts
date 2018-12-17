@@ -123,14 +123,17 @@ export class MongoDBStorage implements IStorage<string> {
     }
 
     async createUserAnswers(
-        user: string,
         quiz: string,
         answers: { question: string, answer: string }[],
-        textAnswers: { question: string, answer: string }[]
+        textAnswers: { question: string, answer: string }[],
+        user?: string
     ):
         Promise<UserAnsweredQuiz<string>> {
         const q: Quiz = await this.storage.collection('quizzes').findOne({_id: new ObjectID(quiz)});
-        const u: User = await this.storage.collection('users').findOne({_id: new ObjectID(user)});
+        let u: User | undefined;
+        if (user) {
+            u = await this.storage.collection('users').findOne({_id: new ObjectID(user)});
+        }
         let questions: UserAnsweredQuestion<string>[] = await Promise.all((answers || []).map(async k => {
             const textAnswer = _.find(textAnswers, {question: k.question});
             textAnswers = (textAnswers || []).filter(a => a.question !== _.get(textAnswer, ['_id'], ''));
@@ -155,7 +158,7 @@ export class MongoDBStorage implements IStorage<string> {
         const res = await this.storage.collection('answeredQuizzes').insertOne({
             ...ans,
             quiz: ans.quiz._id,
-            user: ans.user._id,
+            user: (ans.user || {_id: undefined})._id,
             questions: ans.questions.map(q => ({
                 _id: q.question._id,
                 answers: (q.answers || []).map(a => a._id),

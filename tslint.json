@@ -63,6 +63,7 @@
       true,
       2
     ],
+    "variable-name": false,
     "array-type": false,
     "no-string-literal": false,
     "ordered-imports": false,

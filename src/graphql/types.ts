@@ -190,10 +190,6 @@ export const quizInput = new GraphQLInputObjectType({
             type: GraphQLList(questionInput),
             description: 'Quiz questions'
         },
-        replaces: {
-            type: GraphQLList(replacedQuizzesInput),
-            description: 'Quizzes replaced by current one'
-        }
     })
 });
 

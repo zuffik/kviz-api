@@ -1,23 +1,35 @@
 import { GraphQLObjectType, GraphQLSchema } from "graphql";
 import {
-    answer, answerInput, image, imageInput,
+    answer,
+    answerInput,
+    image,
+    imageInput,
     question,
-    questionAnswerPair, questionInput,
+    questionAnswerPair,
+    questionInput,
     questionTextAnswerPair,
     QuestionType,
-    quiz, quizInput, replacedQuizzesInput,
-    uploadedFile, uploadedFileInput,
+    quiz,
+    quizInput,
+    replacedQuizzesInput,
+    uploadedFile,
+    uploadedFileInput,
     user,
     userAnsweredQuestion,
-    userAnsweredQuiz, userInput
+    userAnsweredQuiz,
+    userInput
 } from "./types";
 import {
     answerQuestion,
     createAnswer,
     createQuestion,
-    createQuiz, createQuizFromObject,
+    createQuiz,
+    createQuizFromObject,
     createUser,
-    editQuiz, editQuizFromObject, imagesQuery,
+    deleteQuiz,
+    editQuiz,
+    editQuizFromObject,
+    imagesQuery,
     quizQuery,
     userAnswersQuery,
     usersQuery
@@ -63,7 +75,8 @@ export const schema = new GraphQLSchema({
             createQuestion,
             createAnswer,
             createUser,
-            answerQuestion
+            answerQuestion,
+            deleteQuiz
         })
     })
 });

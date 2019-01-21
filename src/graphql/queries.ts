@@ -70,6 +70,15 @@ export const createQuiz = {
     }, q.questions)
 };
 
+export const deleteQuiz = {
+    type: quiz,
+    description: 'Deletes a quiz',
+    args: {
+        _id: {type: GraphQLString}
+    },
+    resolve: async (val: any, q: {_id: string}) => (await Storage.instance()).deleteQuiz(q._id)
+};
+
 export const createQuizFromObject = {
     type: quiz,
     description: 'Creates a quiz',

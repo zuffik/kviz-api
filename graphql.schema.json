@@ -148,6 +148,22 @@
             "deprecationReason": null
           },
           {
+            "name": "slug",
+            "description": "Unique per quiz",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "title",
             "description": "Title of a quiz",
             "args": [],
@@ -1081,6 +1097,29 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "deleteQuiz",
+            "description": "Deletes a quiz",
+            "args": [
+              {
+                "name": "_id",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Quiz",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -1107,6 +1146,20 @@
           {
             "name": "title",
             "description": "Title of a quiz",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "slug",
+            "description": "Unique per quiz",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -1147,20 +1200,6 @@
               "ofType": {
                 "kind": "INPUT_OBJECT",
                 "name": "QuestionInput",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "replaces",
-            "description": "Quizzes replaced by current one",
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "replacedQuizzesInput",
                 "ofType": null
               }
             },
@@ -1299,13 +1338,9 @@
             "name": "_id",
             "description": "Answer ID",
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "defaultValue": null
           },
@@ -1332,45 +1367,6 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "Boolean",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "replacedQuizzesInput",
-        "description": null,
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "datetime",
-            "description": "A time when was quiz replaced (updated)",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "_id",
-            "description": "What quiz was replaced",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
                 "ofType": null
               }
             },
@@ -2358,6 +2354,45 @@
           {
             "name": "file",
             "description": "Name of file",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "replacedQuizzesInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "datetime",
+            "description": "A time when was quiz replaced (updated)",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "_id",
+            "description": "What quiz was replaced",
             "type": {
               "kind": "NON_NULL",
               "name": null,

@@ -66,6 +66,10 @@ export const quiz = new GraphQLObjectType({
             type: GraphQLNonNull(idType),
             description: 'Quiz ID'
         },
+        slug: {
+            type: GraphQLNonNull(GraphQLString),
+            description: 'Unique per quiz'
+        },
         title: {
             type: GraphQLNonNull(GraphQLString),
             description: 'Title of a quiz'
@@ -177,6 +181,10 @@ export const quizInput = new GraphQLInputObjectType({
         title: {
             type: GraphQLNonNull(GraphQLString),
             description: 'Title of a quiz'
+        },
+        slug: {
+            type: GraphQLNonNull(GraphQLString),
+            description: 'Unique per quiz'
         },
         subtitle: {
             type: GraphQLString,

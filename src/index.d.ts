@@ -22,6 +22,7 @@ export interface Quiz<UniqueIdType extends UniqueId = number> {
     _id?: UniqueIdType;
     createdAt: number;
     title: string;
+    slug: string;
     subtitle: string;
     image?: UploadedFile<UniqueIdType> | string;
     questions: Question<UniqueIdType>[];

@@ -56,12 +56,14 @@ export const createQuiz = {
     description: 'Creates a quiz',
     args: {
         title: {type: GraphQLNonNull(GraphQLString), description: 'Quiz title'},
+        slug: {type: GraphQLNonNull(GraphQLString), description: 'Quiz slug'},
         subtitle: {type: GraphQLString, description: 'Quiz subtitle'},
         questions: {type: GraphQLList(idType), description: 'List of question ids'},
         image: {type: GraphQLString, description: 'Cover image for quiz'},
     },
     resolve: async (val: any, q: any) => (await Storage.instance()).createQuiz({
         title: q.title as string,
+        slug: q.slug as string,
         subtitle: q.subtitle as string,
         image: q.image as string,
         questions: [],
@@ -94,6 +96,7 @@ export const editQuiz = {
     args: {
         _id: {type: GraphQLNonNull(idType), description: 'Quiz _id to be edited'},
         title: {type: GraphQLNonNull(GraphQLString), description: 'Quiz title'},
+        slug: {type: GraphQLNonNull(GraphQLString), description: 'Quiz slug'},
         subtitle: {type: GraphQLString, description: 'Quiz subtitle'},
         questions: {type: GraphQLList(idType), description: 'List of question ids'},
         image: {type: GraphQLString, description: 'Cover image for quiz'},
@@ -101,6 +104,7 @@ export const editQuiz = {
     resolve: async (val: any, q: any) => (await Storage.instance()).updateQuiz({
         _id: q._id as string,
         title: q.title as string,
+        slug: q.slug as string,
         subtitle: q.subtitle as string,
         image: q.image as string,
         questions: [],

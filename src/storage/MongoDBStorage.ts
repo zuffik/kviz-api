@@ -70,7 +70,7 @@ export class MongoDBStorage implements IStorage<string> {
     }
 
     async deleteQuiz(_id: string) {
-        const quiz = await this.storage.collection('quizzes').findOne({_id});
+        const quiz = await this.storage.collection('quizzes').findOne({_id: new ObjectID(_id)});
         await this.storage.collection('quizzes').deleteOne({
             _id: new ObjectID(_id)
         });
